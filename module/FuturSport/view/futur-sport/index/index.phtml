@@ -1,0 +1,16 @@
+<?php
+
+$title = 'Add new album';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formRow($form->get('username'));
+echo $this->form()->closeTag();
+
+?>

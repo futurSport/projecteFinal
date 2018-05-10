@@ -45,14 +45,6 @@ class Users{
         $inputFilter = new InputFilter();
 
         $inputFilter->add([
-            'name' => 'id',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-
-        $inputFilter->add([
             'name' => 'username',
             'required' => true,
             'filters' => [

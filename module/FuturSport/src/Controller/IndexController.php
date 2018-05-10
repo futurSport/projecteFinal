@@ -18,6 +18,13 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-       
+        $form=new UsersForm();
+        $form->get('submit')->setValue('Add');
+
+        $request = $this->getRequest();
+
+        if (! $request->isPost()) {
+            return ['form' => $form];
+        }
     }
 }

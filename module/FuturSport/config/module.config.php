@@ -49,8 +49,8 @@ return [
     ],
 
     'view_manager'=>[
-        'template_path_stock'=>[
-            'futursport'=>__DIR__.'/../view',
+        'template_path_stack'=>[
+            'futur-sport'=>__DIR__.'/../view',
         ],
     ],
 ];
