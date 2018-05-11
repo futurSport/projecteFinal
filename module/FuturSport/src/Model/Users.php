@@ -13,12 +13,14 @@ use Zend\Validator\StringLength;
 
 class Users{
     public $id;
-    //public $rol_id;
+    public $rol_id;
     public $username;
-    //public $name;
-    //public $surname;
-    //public $password;
+    public $name;
+    public $surname;
+    public $password;
 
+    private $inputFilter;
+    
     public function exchangeArray(array $data)
     {
         $this->id     = !empty($data['id']) ? $data['id'] : null;
@@ -57,6 +59,18 @@ class Users{
                     'options' => [
                         'min' => 1,
                         'max' => 200,
+                    ],
+                ],
+            ],
+        ]);
+        $inputFilter->add([
+            'name' => 'password',
+            'required' => true,
+            'validators' => [
+                [
+                    'name' => StringLength::class,
+                    'options' => [
+                        'min' => 8,
                     ],
                 ],
             ],

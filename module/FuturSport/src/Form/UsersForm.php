@@ -4,6 +4,7 @@ namespace FuturSport\Form;
 
 use Zend\Form\Form;
 
+
 class UsersForm extends Form
 {
     public function __construct($name = null)
@@ -15,12 +16,18 @@ class UsersForm extends Form
         $this->add([
             'name' => 'username',
             'type' => 'text',
-            'required'   => true,
+            
             'options' => [
-                'label' => 'Correu Electrònic',
+                'label' => 'Correu Electrònic: ',
             ],
         ]);
-       
+       $this->add([
+            'name' => 'password',
+            'type' => 'password',
+            'options' => [
+                'label' => 'Contrasenya: ',
+            ],
+        ]);
         $this->add([
             'name' => 'submit',
             'type' => 'submit',

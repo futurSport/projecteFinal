@@ -15,6 +15,6 @@ return [
     // ...
     'db' => [
         'driver' => 'Pdo',
-        'dsn'    => 'mysql:dbname=futursport;host=localhost;charset=utf8mb4',
+        'dsn'    => 'mysql:dbname=futursport;host=localhost',
     ],
 ];

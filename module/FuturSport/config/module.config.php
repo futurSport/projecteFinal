@@ -30,7 +30,7 @@ return [
     ],*/
     'router' => [
         'routes' => [
-            'album' => [
+            'index' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route' => '/index[/:action]',
@@ -38,7 +38,6 @@ return [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         
                     ],
-                   
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',

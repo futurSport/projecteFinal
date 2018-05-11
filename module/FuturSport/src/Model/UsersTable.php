@@ -19,22 +19,19 @@ class UsersTable
         return $this->tableGateway->select();
     }
 
-    public function getUser($id)
+    public function getUser(Users $user)
     {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(['id' => $id]);
+
+        $rowset = $this->tableGateway->select(['username' => $user->username, 'password'=>$user->password]);
         $row = $rowset->current();
         if (! $row) {
-            throw new RuntimeException(sprintf(
-                'Could not find row with identifier %d',
-                $id
-            ));
+            return '';
         }
 
         return $row;
     }
 
-    public function saveUser(User $user)
+    public function saveUser(Users $user)
     {
         $data = [
             'id_rol' => $user->id_rol,
