@@ -8,7 +8,7 @@ use FuturSport\Model\UsersTable;
 use FuturSport\Model\Users;
 use FuturSport\Form\UsersForm; 
 
-use Zend\Session\SessionManager;
+use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
@@ -42,7 +42,14 @@ class IndexController extends AbstractActionController
         
         $entrar=$this->table->getUser($user);
         if(!empty($entrar)){
-            echo "<pre>";print_r($entrar); echo "</pre>";
+            $sessionContainer = new Container('usuariConectat');
+            $sessionContainer->id = $entrar['id'];
+            $sessionContainer->rol_name = $entrar['rol_name'];
+            $sessionContainer->name = $entrar['name'];
+            $sessionContainer->surname = $entrar['surname'];
+            
+            
+            return $this->redirect()->toRoute($this->access()->checkAccess());
             
         }
         else{

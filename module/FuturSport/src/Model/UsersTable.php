@@ -19,10 +19,13 @@ class UsersTable
         return $this->tableGateway->select();
     }
 
+    
     public function getUser(Users $user)
     {
+        $sql="select u.id, r.name as 'rol_name', u.name, u.surname from users u inner join rol r on u.rol_id=r.id where u.username='".$user->username."' and u.password='".$user->password."'";
+        $rowset=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
+ 
 
-        $rowset = $this->tableGateway->select(['username' => $user->username, 'password'=>$user->password]);
         $row = $rowset->current();
         if (! $row) {
             return '';
