@@ -2,6 +2,7 @@
 namespace FuturSport;
 
 use Zend\Router\Http\Segment;
+use Zend\Router\Http\Literal;
 
 
 return [
@@ -9,6 +10,7 @@ return [
         'factories'=>[
             Controller\IndexController::class=> Controller\Factory\IndexControllerFactory::class,
             Controller\CampController::class=> Controller\Factory\CampControllerFactory::class,
+            Controller\AdminController::class=> Controller\Factory\AdminControllerFactory::class,
         ],
     ],
     /*'router' => [
@@ -55,6 +57,16 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\CampController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+             'admin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route' => '/admin',
+                    'defaults' => [
+                        'controller' => Controller\AdminController::class,
                         'action'     => 'index',
                     ],
                 ],

@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Form/UsersForm.php</file>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/view/futur-sport/index/index.phtml</file>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Model/Users.php</file>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/Application/view/layout/layout.phtml</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Model/UsersTable.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/Plugin/AccessPlugin.php</file>
             <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/IndexController.php</file>
             <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/config/module.config.php</file>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/Application/config/module.config.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/config/autoload/global.php</file>
         </group>
     </open-files>
 </project-private>

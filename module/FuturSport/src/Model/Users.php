@@ -66,14 +66,6 @@ class Users{
         $inputFilter->add([
             'name' => 'password',
             'required' => true,
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'min' => 8,
-                    ],
-                ],
-            ],
         ]);
        
         $this->inputFilter = $inputFilter;

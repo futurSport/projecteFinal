@@ -48,7 +48,7 @@ class IndexController extends AbstractActionController
             $sessionContainer->name = $entrar['name'];
             $sessionContainer->surname = $entrar['surname'];
             
-            
+            $this->access()->checkAccess();
             return $this->redirect()->toRoute($this->access()->checkAccess());
             
         }
