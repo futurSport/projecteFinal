@@ -11,6 +11,7 @@ return [
             Controller\IndexController::class=> Controller\Factory\IndexControllerFactory::class,
             Controller\CampController::class=> Controller\Factory\CampControllerFactory::class,
             Controller\AdminController::class=> Controller\Factory\AdminControllerFactory::class,
+            Controller\AdminUsersController::class=> Controller\Factory\AdminUsersControllerFactory::class,
         ],
     ],
     /*'router' => [
@@ -67,6 +68,20 @@ return [
                     'route' => '/admin',
                     'defaults' => [
                         'controller' => Controller\AdminController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'admin-users' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-users[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminUsersController::class,
                         'action'     => 'index',
                     ],
                 ],

@@ -61,9 +61,14 @@ class UsersTable
         $this->tableGateway->update($data, ['id' => $id]);
     }
 
-    public function deleteAlbum($id)
+    public function deleteUser($id)
     {
         $this->tableGateway->delete(['id' => (int) $id]);
+    }
+    public function getAllRows($clausule=''){
+        $sql=$this->tableGateway->select();
+       $sql->where('name LIKE ?', '%admin%');
+        return $sql;
     }
 }
 
