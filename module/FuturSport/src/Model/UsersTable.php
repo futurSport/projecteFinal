@@ -5,6 +5,7 @@ namespace FuturSport\Model;
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 
+
 class UsersTable
 {
     private $tableGateway;
@@ -66,9 +67,10 @@ class UsersTable
         $this->tableGateway->delete(['id' => (int) $id]);
     }
     public function getAllRows($clausule=''){
-        $sql=$this->tableGateway->select();
-       $sql->where('name LIKE ?', '%admin%');
-        return $sql;
+        $rows = $this->tableGateway->select(['name LIKE ?'=>'%'.$clausule.'%']);
+
+        
+        return $rows;
     }
 }
 

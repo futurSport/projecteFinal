@@ -28,11 +28,11 @@ class AdminUsersController extends AbstractActionController{
     public function indexAction(){
         if($this->access()->isAdmin()){
          return ['missatge' => 'Ha entrat a la zona d\'usuaris',
-                    'users' =>$this->table->getAllRows()
+                 'users' =>$this->table->getAllRows()
              ];
         }
         else{
-            $this->access()->destroySession();
+           $this->access()->destroySession();
            return $this->redirect()->toRoute('index'); 
         }
     }
