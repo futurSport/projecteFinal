@@ -36,4 +36,8 @@ class AdminUsersController extends AbstractActionController{
            return $this->redirect()->toRoute('index'); 
         }
     }
+    public function addAction(){
+        return ['missatge' => 'Ha entrat a la zona de creació d\'usuaris',
+             ];
+    }
 }

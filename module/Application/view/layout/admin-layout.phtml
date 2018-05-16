@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estil personal -->
-        <link href="css/styleAdminLayout.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php echo $this->basePath(); ?>/css/styleAdminLayout.css" rel="stylesheet" type="text/css" media="screen">
 
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -25,7 +25,7 @@
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     </head>
     <body> 
-
+        
         <div class="pagina">  
             <div class="col-lg-3 col-md-3">
                 <div class="nav-side-menu">
@@ -42,7 +42,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="admin-users">
+                                <a href="<?php echo $this->url('admin-users');?>">
                                     <i class="fa fa-dashboard fa-lg"></i> Usuaris
                                 </a>
                             </li>
