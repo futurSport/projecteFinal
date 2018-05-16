@@ -10,6 +10,6 @@ use FuturSport\Controller\Plugin\AccessPlugin;
 
 class AccessPluginFactory implements FactoryInterface{
     public function __invoke(ContainerInterface $container, $requestedName, array $options=null) {
-         return new AccessPlugin();
+         return new AccessPlugin($container->get('usuariConectat'));
     } 
 }

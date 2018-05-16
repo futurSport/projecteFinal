@@ -9,7 +9,8 @@ use FuturSport\Model\UsersTable;
 
 class IndexControllerFactory implements FactoryInterface{
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null) {
-        return new IndexController($container->get(UsersTable::class));
+        return new IndexController($container->get(UsersTable::class),
+                $container->get('usuariConectat'));
     }
 }
 

@@ -13,48 +13,60 @@ use Zend\Session\Container;
 class IndexController extends AbstractActionController
 {
     private $table;
-    
-    public function __construct(UsersTable $table) {
+    private $sessionContainer;
+    public function __construct(UsersTable $table,$sessionContainer) {
         $this->table=$table;
+        $this->sessionContainer=$sessionContainer;
     }
     
     public function indexAction()
     {
-        $form=new UsersForm();
-        $form->get('submit')->setValue('Inicia sessió');
-
-        $request = $this->getRequest();
-
-        if (! $request->isPost()) {
-            return ['form' => $form];
-        }
-        $user=new Users();
-        $form->setInputFilter($user->getInputFilter());
-        $form->setData($request->getPost());
-
-        if (! $form->isValid()) {
-            return ['form' => $form];
-        }
-        
-        //echo "<pre>";print_r($user); echo "</pre>";
-        
-        $user->exchangeArray($form->getData());
-        
-        $entrar=$this->table->getUser($user);
-        if(!empty($entrar)){
-            $sessionContainer = new Container('usuariConectat');
-            $sessionContainer->id = $entrar['id'];
-            $sessionContainer->rol_name = $entrar['rol_name'];
-            $sessionContainer->name = $entrar['name'];
-            $sessionContainer->surname = $entrar['surname'];
+        if(!isset($_SESSION['usuariConectat'])){ 
             
-            $this->access()->checkAccess();
-            return $this->redirect()->toRoute($this->access()->checkAccess());
-            
+            $form=new UsersForm();
+            $form->get('submit')->setValue('Inicia sessió');
+
+            $request = $this->getRequest();
+
+            if (! $request->isPost()) {
+                return ['form' => $form];
+            }
+            $user=new Users();
+            $form->setInputFilter($user->getInputFilter());
+            $form->setData($request->getPost());
+
+            if (! $form->isValid()) {
+                return ['form' => $form];
+            }
+
+           //echo "<pre>";print_r($user); echo "</pre>";
+
+            $user->exchangeArray($form->getData());
+
+            $entrar=$this->table->getUser($user);
+            if(!empty($entrar)){
+                $sessionContainer = new Container('usuariConectat');
+                $sessionContainer->id = $entrar['id'];
+                $sessionContainer->rol_name = $entrar['rol_name'];
+                $sessionContainer->name = $entrar['name'];
+                $sessionContainer->surname = $entrar['surname'];
+
+               
+                return $this->redirect()->toRoute($this->access()->checkAccess());
+
+            }
+            else{
+                return $this->redirect()->toRoute('index');
+            }
+        }else{
+             return $this->redirect()->toRoute($this->access()->checkAccess());
         }
-        else{
-            return $this->redirect()->toRoute('index');
-        }
-         
+        //return $this->redirect()->toRoute('index');
+    }
+    public function logoutAction(){
+        $this->access()->destroySession();
+        return $this->redirect()->toRoute('index');
+        
+        
     }
 }
