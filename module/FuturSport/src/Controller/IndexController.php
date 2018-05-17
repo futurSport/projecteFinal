@@ -9,64 +9,62 @@ use FuturSport\Model\Users;
 use FuturSport\Form\UsersForm; 
 
 use Zend\Session\Container;
+use Zend\Session\SessionManager; 
+
+use Zend\Crypt\Password\Bcrypt;
 
 class IndexController extends AbstractActionController
 {
     private $table;
     private $sessionContainer;
+    private $sessionManager;
     public function __construct(UsersTable $table,$sessionContainer) {
         $this->table=$table;
         $this->sessionContainer=$sessionContainer;
+        $sessionManager=new SessionManager;
+        $this->sessionManager=$sessionManager;
+        
     }
     
     public function indexAction()
     {
         if(!isset($_SESSION['usuariConectat'])){ 
-            
-            $form=new UsersForm();
-            $form->get('submit')->setValue('Inicia sessió');
-
             $request = $this->getRequest();
+            if($request->isPost()){
+                $formData=$request->getPost();
+            
 
-            if (! $request->isPost()) {
-                return ['form' => $form];
-            }
-            $user=new Users();
-            $form->setInputFilter($user->getInputFilter());
-            $form->setData($request->getPost());
+                $username=$formData['email'];
+                $password=$formData['password'];
+            
+           
+                $entrar=$this->table->getUserRegister($username);
+                $bcrypt=new Bcrypt();
 
-            if (! $form->isValid()) {
-                return ['form' => $form];
-            }
+                if ($bcrypt->verify($password, $entrar['password'])) {
+                    $sessionContainer = new Container('usuariConectat');
+                    $sessionContainer->id = $entrar['id'];
+                    $sessionContainer->rol_name = $entrar['rol_name'];
+                    $sessionContainer->name = $entrar['name'];
+                    $sessionContainer->surname = $entrar['surname'];
 
-           //echo "<pre>";print_r($user); echo "</pre>";
 
-            $user->exchangeArray($form->getData());
+                    return $this->redirect()->toRoute($this->access()->checkAccess());
 
-            $entrar=$this->table->getUser($user);
-            if(!empty($entrar)){
-                $sessionContainer = new Container('usuariConectat');
-                $sessionContainer->id = $entrar['id'];
-                $sessionContainer->rol_name = $entrar['rol_name'];
-                $sessionContainer->name = $entrar['name'];
-                $sessionContainer->surname = $entrar['surname'];
-
-               
-                return $this->redirect()->toRoute($this->access()->checkAccess());
-
-            }
+                }
+           }    
             else{
-                return $this->redirect()->toRoute('index');
+               return new ViewModel([
+                    'message' => 'Per no redirigir',
+                ]);
             }
         }else{
              return $this->redirect()->toRoute($this->access()->checkAccess());
         }
-        //return $this->redirect()->toRoute('index');
+        
     }
     public function logoutAction(){
         $this->access()->destroySession();
         return $this->redirect()->toRoute('index');
-        
-        
     }
 }

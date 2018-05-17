@@ -15,12 +15,11 @@ class AccessPlugin extends AbstractPlugin{
     public function __construct($sessionContainer) 
     {
         $this->sessionContainer = $sessionContainer;
-        $sessionManager=new SessionManager;
+        $sessionManager=new SessionManager();
         $this->sessionManager=$sessionManager;
     }
     
     public function checkAccess(){
-       
         if(isset($_SESSION['usuariConectat'])){
             if($this->sessionContainer->rol_name=='admin'){
                 return 'admin';
@@ -35,9 +34,8 @@ class AccessPlugin extends AbstractPlugin{
         }
     }
     public function isAdmin(){
-        $session=new SessionManager();
-        $session->start();
-        if($session->sessionExists()){
+        $this->sessionManager->start();
+        if($this->sessionManager->sessionExists()){
             if($_SESSION['usuariConectat']->rol_name=='admin'){
                     return true;
                 }
@@ -49,6 +47,7 @@ class AccessPlugin extends AbstractPlugin{
     public function destroySession(){
         if($this->sessionManager->sessionExists()){
            return $this->sessionManager->destroy();
+           
         }
     }
 }

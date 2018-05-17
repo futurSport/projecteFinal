@@ -32,7 +32,7 @@ $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');?>
 <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
 <?php
-$form->setAttribute('action', $this->url('admin-users', ['action' => 'add']));
+$form->setAttribute('action', $this->url('admin-users', ['action' => 'update', 'id'=>$id]));
 $form->prepare();
 
 echo $this->form()->openTag($form);

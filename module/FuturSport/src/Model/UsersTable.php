@@ -4,15 +4,17 @@ namespace FuturSport\Model;
 
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
-
+use Zend\Crypt\Password\Bcrypt;
 
 class UsersTable
 {
     private $tableGateway;
-
+    private $bcrypt;
     public function __construct(TableGatewayInterface $tableGateway)
     {
         $this->tableGateway = $tableGateway;
+        $bcrypt=new Bcrypt();
+        $this->bcrypt=$bcrypt;
     }
 
     public function fetchAll()
@@ -20,10 +22,23 @@ class UsersTable
         return $this->tableGateway->select();
     }
 
-    
-    public function getUser(Users $user)
+    public function getUser($id){
+        $id = (int) $id;
+        $rowset = $this->tableGateway->select(['id' => $id]);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf(
+                _('Could not find row with identifier %d'),
+                $id
+            ));
+        }
+
+        return $row;
+    }
+    public function getUserRegister($username)
     {
-        $sql="select u.id, r.name as 'rol_name', u.name, u.surname from users u inner join rol r on u.rol_id=r.id where u.username='".$user->username."' and u.password='".$user->password."'";
+        
+        $sql="select u.id, u.password ,r.name as 'rol_name', u.name, u.surname from users u inner join rol r on u.rol_id=r.id where u.username='".$username."'";
         $rowset=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
  
 
@@ -37,15 +52,16 @@ class UsersTable
 
     public function saveUser(Users $user)
     {
+        $password=$this->bcrypt->create($user->password);
         $data = [
-            'id_rol' => $user->id_rol,
+            'rol_id' => $user->rol_id,
             'username'  => $user->username,
             'name' => $user->name,
             'surname'  => $user->surname,
-            'password' =>$user->password
+            'password' =>$password
         ];
 
-        $id = (int) $album->id;
+        $id = (int) $user->id;
 
         if ($id === 0) {
             $this->tableGateway->insert($data);
@@ -67,9 +83,9 @@ class UsersTable
         $this->tableGateway->delete(['id' => (int) $id]);
     }
     public function getAllRows($clausule=''){
-        $rows = $this->tableGateway->select(['name LIKE ?'=>'%'.$clausule.'%']);
-
-        
+        //$rows = $this->tableGateway->select(['name LIKE ?'=>'%'.$clausule.'%']);
+        $sql="select u.id, r.name as 'rol_name', u.name, u.surname, u.username from users u inner join rol r on u.rol_id=r.id where u.name LIKE '%".$clausule."%'";
+        $rows=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
         return $rows;
     }
 }

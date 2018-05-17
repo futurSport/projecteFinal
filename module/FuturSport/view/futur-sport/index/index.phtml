@@ -3,40 +3,24 @@
     </div>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <?php
-        $username=$form->get('username');
-        $username->setAttribute('class', 'form-control');
-        $username->setAttribute('placeholder', 'e-mail');
-        
-        $password=$form->get('password');
-        $password->setAttribute('class', 'form-control');
-        $password->setAttribute('placeholder', 'contrasenya');
-        
-        $submit=$form->get('submit');
-        $submit->setAttribute('class', 'btn btn-primary');
-        
-        $form->setAttribute('action', $this->url('index'));
-        $form->prepare();
-
-        echo $this->form()->openTag($form);
-        ?>
+            
+            <form action="<?=$this->url('index')?>" method="POST">
+                <fieldset>
+                    <legend>Login</legend>
             <div class="form-group">
-                <?= $this->formLabel($username) ?>
-                <?= $this->formElement($username) ?>
-                <?= $this->formElementErrors()->render($username, ['class' => 'help-block']) ?>
+                <label for="email">E-mail</label>
+                <input type="email" name="email" class="form-control" placeholder="e-mail" requierd>
             </div>
             <div class="form-group">
-                <?= $this->formLabel($password) ?>
-                <?= $this->formElement($password) ?>
-                <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
+               <label for="password">Contrasenya</label>
+               <input type="password" name="password" class="form-control" placeholder="Contrasenya" min="8" required>
             </div>
             <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-3">
-            <?= $this->formSubmit($submit);?>
+                <input type="submit" value="LogIn" class="btn btn-primary">
             
             </div>
-            <?php
-            echo $this->form()->closeTag();
-            ?>
+                </fieldset>
+            </form>
         </div>    
     </div>      
 </div>

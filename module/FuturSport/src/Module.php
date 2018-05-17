@@ -30,6 +30,16 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Users());
                     return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\RolTable::class => function($container) {
+                    $tableGateway = $container->get(Model\RolTableGateway::class);
+                    return new Model\RolTable($tableGateway);
+                },
+                Model\RolTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Rol());
+                    return new TableGateway('rol', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }

@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
 {
     public static $files = array (
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '10a6847eba8a430a134fad89f4a30a26' => __DIR__ . '/..' . '/zendframework/zend-cache/autoload/patternPluginManagerPolyfill.php',
         '34901568a1e26d13dd475cb2c85e0284' => __DIR__ . '/..' . '/zendframework/zend-form/autoload/formElementManagerPolyfill.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -39,6 +40,7 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
             'Zend\\Mvc\\Console\\' => 17,
             'Zend\\Mvc\\' => 9,
             'Zend\\ModuleManager\\' => 19,
+            'Zend\\Math\\' => 10,
             'Zend\\Log\\' => 9,
             'Zend\\Loader\\' => 12,
             'Zend\\Json\\' => 10,
@@ -55,6 +57,7 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
             'Zend\\Di\\' => 8,
             'Zend\\Debug\\' => 11,
             'Zend\\Db\\' => 8,
+            'Zend\\Crypt\\' => 11,
             'Zend\\Console\\' => 13,
             'Zend\\Config\\' => 12,
             'Zend\\ComponentInstaller\\' => 24,
@@ -179,6 +182,10 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-modulemanager/src',
         ),
+        'Zend\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-math/src',
+        ),
         'Zend\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-log/src',
@@ -242,6 +249,10 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
         'Zend\\Db\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-db/src',
+        ),
+        'Zend\\Crypt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-crypt/src',
         ),
         'Zend\\Console\\' => 
         array (
