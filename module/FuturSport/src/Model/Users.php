@@ -21,14 +21,14 @@ class Users{
 
     private $inputFilter;
     
-    /*public function __construct($username, $password, $name, $surname, $rol_id, $id=null) {
+    public function __construct($username=null, $password=null, $name=null, $surname=null, $rol_id=null, $id=null) {
         $this->username=$username;
         $this->password=$password;
         $this->name=$name;
         $this->surname=$surname;
         $this->rol_id=$rol_id;
         $this->id=$id;
-    }*/
+    }
     
     public function getId(){return $this->id;}
     public function getUsername(){return $this->username;}

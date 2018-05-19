@@ -32,6 +32,7 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
             'Zend\\ServiceManager\\' => 20,
             'Zend\\Router\\' => 12,
             'Zend\\Psr7Bridge\\' => 16,
+            'Zend\\Paginator\\' => 15,
             'Zend\\Mvc\\Plugin\\Prg\\' => 20,
             'Zend\\Mvc\\Plugin\\Identity\\' => 25,
             'Zend\\Mvc\\Plugin\\FlashMessenger\\' => 31,
@@ -149,6 +150,10 @@ class ComposerStaticInit7da8a267635b12a34721a2e0cdba0fb9
         'Zend\\Psr7Bridge\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-psr7bridge/src',
+        ),
+        'Zend\\Paginator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-paginator/src',
         ),
         'Zend\\Mvc\\Plugin\\Prg\\' => 
         array (

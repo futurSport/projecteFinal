@@ -4,46 +4,46 @@
     </h1>
 </div><br>
 <div class="panel panel-default panel-table">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col col-xs-6">
-                    <h3 class="panel-title">Usuaris</h3>
-                  </div>
-                  <div class="col col-xs-6 text-right">
-                    <a href="<?= $this->url('admin-users', ['action' => 'add']) ?>" type="button" class="btn btn-sm btn-primary btn-create">Nou usuari</a>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <table class="table table-striped table-bordered table-list">
-                  <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Cognom</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th  style="width:100px; text-align: center;"><em class="fa fa-cog"></em></th>
-                    </tr> 
-                  </thead>
-                  <tbody>
-                        <?php foreach ($users as $user){ ?>
-                          <tr>
-                            <td><?php echo $user['name']; ?></td>
-                            <td><?php echo $user['surname']; ?></td>
-                            <td><?php echo $user['username']; ?></td>
-                            <td><?php echo $user['rol_name']; ?></td>
-                            <td align="center">
-                              <a href="<?=$this->url('admin-users', ['action' => 'update', 'id'=>$user['id']]);?>" class="btn btn-warning"><em class="fa fa-pencil"></em></a>
-                              <a href="<?=$this->url('admin-users', ['action' => 'delete', 'id'=>$user['id']]);?>" class="btn btn-danger"><em class="fa fa-trash"></em></a>
-                            </td>
-                          </tr>
-                        <?php } ?>  
-                        </tbody>
-                </table>
-            
-              </div>
-              
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-6">
+                <h3 class="panel-title">Usuaris</h3>
             </div>
+            <div class="col col-xs-6 text-right">
+                <a href="<?= $this->url('admin-users', ['action' => 'add']) ?>" type="button" class="btn btn-sm btn-primary btn-create">Nou usuari</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-list">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Cognom</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th  style="width:100px; text-align: center;"><em class="fa fa-cog"></em></th>
+                </tr> 
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user) { ?>
+                    <tr>
+                        <td><?php echo $user['name']; ?></td>
+                        <td><?php echo $user['surname']; ?></td>
+                        <td><?php echo $user['username']; ?></td>
+                        <td><?php echo $user['rol_name']; ?></td>
+                        <td align="center">
+                            <a href="<?= $this->url('admin-users', ['action' => 'update', 'id' => $user['id']]); ?>" class="btn btn-warning"><em class="fa fa-pencil"></em></a>
+                            <button data-id="<?= $user['id'] ?>" class="btn btn-danger deleteUser"><em class="fa fa-trash"></em></button>
+                        </td>
+                    </tr>
+                <?php } ?>  
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
 
 
 

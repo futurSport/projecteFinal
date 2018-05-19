@@ -3,6 +3,7 @@ namespace FuturSport\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+
 use Zend\Mvc\MvcEvent;
 use FuturSport\Model\UsersTable;
 use FuturSport\Model\RolTable;
@@ -35,7 +36,7 @@ class AdminUsersController extends AbstractActionController{
         }
         else{
            $this->access()->destroySession();
-           return $this->redirect()->toRoute('index'); 
+           $this->redirect()->toRoute('index'); 
         }
     }
     public function addAction(){
@@ -59,11 +60,11 @@ class AdminUsersController extends AbstractActionController{
 
             $user->exchangeArray($form->getData());
             $this->usersTable->saveUser($user);
-            return $this->redirect()->toRoute('admin-users'); 
+            $this->redirect()->toRoute('admin-users'); 
            }
            else{
               $this->access()->destroySession();
-              return $this->redirect()->toRoute('index');   
+              $this->redirect()->toRoute('index');   
            }
     }
     public function updateAction(){
@@ -105,10 +106,27 @@ class AdminUsersController extends AbstractActionController{
         }
         else{
               $this->access()->destroySession();
-              return $this->redirect()->toRoute('index');   
+              $this->redirect()->toRoute('index');   
            }
     }
-    
+     public function deleteAction(){
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            $this->redirect()->toRoute('admin-users');
+        }
+
+        if($this->usersTable->deleteUser($id)){
+            echo "1";
+        }
+        else{
+            echo "0";
+        }
+      
+        return $view;
+     }
     
     
     

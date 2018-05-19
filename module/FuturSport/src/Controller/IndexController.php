@@ -3,10 +3,11 @@
 namespace FuturSport\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+
+use FuturSport\Model\RolTable;
 use FuturSport\Model\UsersTable;
 use FuturSport\Model\Users;
-use FuturSport\Form\UsersForm; 
+
 
 use Zend\Session\Container;
 use Zend\Session\SessionManager; 
@@ -18,8 +19,11 @@ class IndexController extends AbstractActionController
     private $table;
     private $sessionContainer;
     private $sessionManager;
-    public function __construct(UsersTable $table,$sessionContainer) {
+    private $rolTable;
+    
+    public function __construct(UsersTable $table,RolTable $rolTable,$sessionContainer) {
         $this->table=$table;
+        $this->rolTable=$rolTable;
         $this->sessionContainer=$sessionContainer;
         $sessionManager=new SessionManager;
         $this->sessionManager=$sessionManager;
@@ -28,43 +32,94 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-        if(!isset($_SESSION['usuariConectat'])){ 
-            $request = $this->getRequest();
-            if($request->isPost()){
-                $formData=$request->getPost();
+        if(!isset($_SESSION['usuariConectat'])){             
             
-
-                $username=$formData['email'];
-                $password=$formData['password'];
-            
+            $rols=$this->getRolsforSelect();
            
-                $entrar=$this->table->getUserRegister($username);
-                $bcrypt=new Bcrypt();
+            $request = $this->getRequest();
+            
+            if ($request->isPost()) {
+                $formData=$request->getPost();
+                if($formData['form']=="formLogin"){
+                    $username=$formData['email'];
+                    $password=$formData['password'];
+                    
+                    $entrar=$this->table->getUserRegister($username);
+                    
+                    $bcrypt=new Bcrypt();
 
-                if ($bcrypt->verify($password, $entrar['password'])) {
-                    $sessionContainer = new Container('usuariConectat');
-                    $sessionContainer->id = $entrar['id'];
-                    $sessionContainer->rol_name = $entrar['rol_name'];
-                    $sessionContainer->name = $entrar['name'];
-                    $sessionContainer->surname = $entrar['surname'];
-
-
-                    return $this->redirect()->toRoute($this->access()->checkAccess());
-
+                    if (!empty($entrar) && $bcrypt->verify($password, $entrar['password'])) {
+                        $this->createSession($entrar);
+                    }
+                    else{
+                       return ['rols'=>$rols,
+                               'messageLogin'=>'Usuari Incorrecte',
+                               'messageRegister'=>'']; 
+                    }
                 }
-           }    
+                else if($formData['form']=="formRegitrar"){
+                    $username=$formData['email'];
+                    $password=$formData['password'];
+                    $name=$formData['name'];
+                    $surname=$formData['surname'];
+                    $rol_id=$formData['rol_id'];
+                    $estaRegitrat=$this->table->getUserRegister($username);
+                    if(empty($estaRegitrat)){
+                        $user=new Users($username, $password, $name, $surname, $rol_id);
+                        $this->table->saveUser($user);
+                       $entrar=$this->table->getUserRegister($username);
+                        if(!empty($entrar)){
+                            $this->createSession($entrar);
+                        }
+                        else{
+                            return ['rols'=>$rols,
+                              'messageLogin'=>'',
+                               'messageRegister'=>'Error al registrar-se']; 
+                        }
+                       
+                    }
+                    else{
+                          return ['rols'=>$rols,
+                              'messageLogin'=>'',
+                               'messageRegister'=>'L\'e-mail ja existeix']; 
+                       }
+                    
+                }
+                
+                
+            } 
             else{
-               return new ViewModel([
-                    'message' => 'Per no redirigir',
-                ]);
+                return ['rols'=>$rols,
+                        'messageLogin'=>'',
+                        'messageRegister'=>'']; 
             }
-        }else{
-             return $this->redirect()->toRoute($this->access()->checkAccess());
+        }      
+        else{
+             $this->redirect()->toRoute($this->access()->checkAccess());
         }
         
     }
     public function logoutAction(){
         $this->access()->destroySession();
-        return $this->redirect()->toRoute('index');
+        $this->redirect()->toRoute('index');
+    }
+    
+     public function getRolsforSelect(){
+        $rols=$this->rolTable->fetchAll();
+        $role=[];
+        foreach($rols as $rol){
+            if($rol->name!='admin'){
+                array_push($role, $rol);
+            }
+        }
+        return $role;
+    }
+    public function createSession($user){
+        $sessionContainer = new Container('usuariConectat');
+        $sessionContainer->id = $user['id'];
+        $sessionContainer->rol_name = $user['rol_name'];
+        $sessionContainer->name = $user['name'];
+        $sessionContainer->surname = $user['surname'];
+        $this->redirect()->toRoute($this->access()->checkAccess());
     }
 }

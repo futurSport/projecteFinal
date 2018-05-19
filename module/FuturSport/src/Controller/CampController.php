@@ -11,6 +11,12 @@ use Zend\Session\Container;
 
 class CampController extends AbstractActionController{
     public function indexAction(){
-        echo "<h1>Entrat</h1>";
+        $idUser=$this->access()->logat();
+        if($idUser!=0){
+            
+        }
+        else{
+            $this->redirect()->toRoute('index');
+        }
     }
 }

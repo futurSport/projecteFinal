@@ -64,8 +64,9 @@ class UsersTable
         $id = (int) $user->id;
 
         if ($id === 0) {
-            $this->tableGateway->insert($data);
-            return;
+            
+            $id=$this->tableGateway->insert($data);
+            return $id;
         }
 
         if (! $this->getUser($id)) {
@@ -80,7 +81,10 @@ class UsersTable
 
     public function deleteUser($id)
     {
-        $this->tableGateway->delete(['id' => (int) $id]);
+        if($this->tableGateway->delete(['id' => (int) $id])){
+            return true;
+        }
+        return false;
     }
     public function getAllRows($clausule=''){
         //$rows = $this->tableGateway->select(['name LIKE ?'=>'%'.$clausule.'%']);
