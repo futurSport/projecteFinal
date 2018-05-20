@@ -12,6 +12,7 @@ return [
             Controller\CampController::class=> Controller\Factory\CampControllerFactory::class,
             Controller\AdminController::class=> Controller\Factory\AdminControllerFactory::class,
             Controller\AdminUsersController::class=> Controller\Factory\AdminUsersControllerFactory::class,
+            Controller\ProfileController::class=> Controller\Factory\ProfileControllerFactory::class,
         ],
     ],
     /*'router' => [
@@ -83,6 +84,20 @@ return [
                     'defaults' => [
                         'controller' => Controller\AdminUsersController::class,
                         'action'     => 'index',
+                    ],
+                ],
+            ],
+            'profile' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/profile[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ProfileController::class,
+                        
                     ],
                 ],
             ],

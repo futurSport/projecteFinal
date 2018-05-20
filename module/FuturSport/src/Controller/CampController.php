@@ -2,19 +2,34 @@
 namespace FuturSport\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-//use FuturSport\Model\UsersTable;
-//use FuturSport\Model\Users;
-//use FuturSport\Form\UsersForm; 
 
-use Zend\Session\Container;
+use FuturSport\Model\UsersTable;
+use FuturSport\Model\ProfilesTable;
+
+
+;
 
 class CampController extends AbstractActionController{
+    private $userTable;
+    private $profilesTable;
+    
+    public function __construct(UsersTable $userTable, ProfilesTable $profilesTable) {
+       $this->userTable=$userTable;
+       $this->profilesTable=$profilesTable;
+    }
     public function indexAction(){
         $idUser=$this->access()->logat();
         if($idUser!=0){
-            
-        }
+            if($this->profilesTable->getPerfilUser($idUser)){
+                echo "Tinc Perfil";
+            }
+            else{
+                $this->redirect()->toRoute('profile', array(
+                    'controller' => 'profile',
+                    'action' =>  'first-profile',
+                    'id' =>$idUser ));
+            }
+       }
         else{
             $this->redirect()->toRoute('index');
         }

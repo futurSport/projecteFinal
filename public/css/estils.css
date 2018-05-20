@@ -4,3 +4,14 @@
     padding: 10px;
     margin: 10px;
 }
+#img-profile{
+    width: 230px;
+    height: 230px;
+}
+@media only screen and (max-width: 892px) {
+   
+    #img-profile{
+	margin:10px auto;
+	display:block;
+    }
+}    
