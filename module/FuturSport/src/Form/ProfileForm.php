@@ -32,7 +32,9 @@ class ProfileForm extends Form
        $this->add([
             'name' => 'id_comarca',
             'type' => 'select',
+           
             'options' => [
+                'disable_inarray_validator' => true,
                 'label' => 'Comarca',
             ],
         ]);

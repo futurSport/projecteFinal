@@ -11,7 +11,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
 use Zend\Validator\Regex;
 class Profiles{
-    public $id;
+    public $id_user;
     public $photo;
     public $id_provincia;
     public $id_comarca;
@@ -29,7 +29,7 @@ class Profiles{
     
     public function exchangeArray(array $data)
     {
-        $this->id     = !empty($data['id']) ? $data['id'] : null;
+        $this->id_user     = !empty($data['id_user']) ? $data['id_user'] : null;
         $this->photo = !empty($data['photo']) ? $data['photo'] : null;
         $this->id_provincia  = !empty($data['id_provincia']) ? $data['id_provincia'] : null;
         $this->id_comarca   = !empty($data['id_comarca']) ? $data['id_comarca'] : null;
@@ -66,7 +66,7 @@ class Profiles{
         $inputFilter = new InputFilter();
          $inputFilter->add([
             'name' => 'id_user',
-            'required' => true,
+            'required' => false,
             'filters' => [
                 ['name' => ToInt::class],
             ],
@@ -74,6 +74,9 @@ class Profiles{
         
         $inputFilter->add([
             'name' => 'photo',
+            'required' => false,
+            
+            
         ]);
         $inputFilter->add([
             'name' => 'id_provincia',
@@ -81,10 +84,11 @@ class Profiles{
         ]);
         $inputFilter->add([
             'name' => 'id_comarca',
-            'required' => true,
+            'required' => false,
         ]);
         $inputFilter->add([
             'name' => 'poblacio',
+            'required' => false,
             'filters' => [
                 ['name' => StripTags::class],
                 ['name' => StringTrim::class],
@@ -101,6 +105,7 @@ class Profiles{
         ]);
          $inputFilter->add([
             'name' => 'direccio',
+             'required' => false,
             'filters' => [
                 ['name' => StripTags::class],
                 ['name' => StringTrim::class],
@@ -117,17 +122,20 @@ class Profiles{
         ]);
           $inputFilter->add([
             'name' => 'telefon',
+              'required' => true,
             'filters' => [
                 ['name' => StripTags::class],
                 ['name' => StringTrim::class],
             ],
             'validators' => [
                 [
-                    
-                    'name'=> Regex::class,
-                    'options'=>[
-                        'pattern'=>'[0-9]+'
+                    'name' => StringLength::class,
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min'=>9,
+                        'max' => 9,
                     ],
+                    
                 ],
             ],
         ]);

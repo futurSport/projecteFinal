@@ -23,4 +23,21 @@ class ProfilesTable{
 
             return $row;
     }
+    public function saveProfile(Profiles $profile){
+        
+         $data = [
+            'id_user' => $profile->id_user,
+            'photo'  => $profile->photo,
+            'id_provincia' => $profile->id_provincia,
+            'id_comarca'  => $profile->id_comarca,
+            'poblacio' =>$profile->poblacio,
+            'direccio'=>$profile->direccio,
+            'telefon'=>$profile->telefon
+             
+        ];
+         if($this->tableGateway->insert($data)){
+             return true;
+         }
+         return false;
+    }
 }
