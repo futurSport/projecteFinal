@@ -2,7 +2,7 @@ $(document).ready(function(){
     $('.deleteUser').click(function(){
         var id=$(this).attr('data-id');
          var father=$(this).parents("tr");
-        $.post( "/practicaFinal/projecteFinal/public/admin-users/delete/"+id, function( data ) {
+        $.post( "/projecteFinal/public/admin-users/delete/"+id, function( data ) {
             
             if(data==1){
                 father.hide(1000, function(){
@@ -32,7 +32,7 @@ function selectComarca(){
     if(id_provincia==''){
         id_provincia=0;
     }
-$.post( "/practicaFinal/projecteFinal/public/profile/select-comarques/"+id_provincia, function( data ) {
+$.post( "/projecteFinal/public/profile/select-comarques/"+id_provincia, function( data ) {
         if(data!="0"){
             
             var datas=JSON.parse(data);

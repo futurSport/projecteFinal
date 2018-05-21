@@ -18,10 +18,10 @@ class CampController extends AbstractActionController{
        $this->profilesTable=$profilesTable;
     }
     public function indexAction(){
-        $idUser=$this->access()->logat();
+        $idUser=$this->access()->idUser();
         if($idUser!=0){
             if($this->profilesTable->getPerfilUser($idUser)){
-                echo "Tinc Perfil";
+                
             }
             else{
                 $this->redirect()->toRoute('profile', array(

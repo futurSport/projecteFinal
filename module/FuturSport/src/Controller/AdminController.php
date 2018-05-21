@@ -18,8 +18,12 @@ class AdminController extends AbstractActionController{
     return $response;
   }
     public function indexAction(){
-        
+        if($this->access()->isAdmin()){
          return ['missatge' => 'Ha entrat a la zona d\'administracio'];
-      
+        } 
+        else{
+            $this->access()->destroySession();
+           $this->redirect()->toRoute('index'); 
+        }
     }
 }

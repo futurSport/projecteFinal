@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Model/ProfilesTable.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/AdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/ProfileController.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/Application/view/layout/layout.phtml</file>
             <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/AdminUsersController.php</file>
-            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/view/futur-sport/admin-users/index.phtml</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/public/custom.js</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/Plugin/AccessPlugin.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/CampController.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/module/FuturSport/src/Controller/IndexController.php</file>
+            <file>file:/C:/xampp/htdocs/projecteFinal/public/css/estils.css</file>
         </group>
     </open-files>
 </project-private>

@@ -51,13 +51,21 @@ class AccessPlugin extends AbstractPlugin{
            
         }
     }
-    public function logat(){
+    public function idUser(){
         if($this->sessionManager->sessionExists()){
             if(isset($_SESSION['usuariConectat'])){
                 return $_SESSION['usuariConectat']->id;
             }
         }
         return 0;
+    }
+    public function logat(){
+        if($this->sessionManager->sessionExists()){
+            if(isset($_SESSION['usuariConectat'])){
+                return true;
+            }
+        }
+        return false;
     }
 }
 
