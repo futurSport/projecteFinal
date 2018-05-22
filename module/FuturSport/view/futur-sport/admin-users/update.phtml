@@ -4,7 +4,7 @@
     </h1>
 </div><br>
 
-<pre><?php print_r($form) ?></pre>
+
 <?php
 // This provides a default CSS class and placeholder text for the title element:
 $username = $form->get('username');
@@ -22,7 +22,8 @@ $surname->setAttribute('placeholder', 'Cognom');
 
 $password = $form->get('password');
 $password->setAttribute('class', 'form-control');
-$password->setAttribute('placeholder', 'Contraseña');
+$password->setAttribute('placeholder', 'Contrasenya');
+
 
 
 $rol_id = $form->get('rol_id');

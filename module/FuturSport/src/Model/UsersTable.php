@@ -50,7 +50,7 @@ class UsersTable
         return $row;
     }
 
-    public function saveUser(Users $user)
+    public function newUser(Users $user)
     {
         $password=$this->bcrypt->create($user->password);
         $data = [
@@ -78,6 +78,38 @@ class UsersTable
 
         $this->tableGateway->update($data, ['id' => $id]);
     }
+    public function updateUser(Users $user, $password)
+    {
+        
+        if(!empty($user->password)){
+            $password=$this->bcrypt->create($user->password);
+        }
+        $data = [
+            'rol_id' => $user->rol_id,
+            'username'  => $user->username,
+            'name' => $user->name,
+            'surname'  => $user->surname,
+            'password' =>$password
+        ];
+
+        $id = (int) $user->id;
+
+        if ($id === 0) {
+            
+            $id=$this->tableGateway->insert($data);
+            return $id;
+        }
+
+        if (! $this->getUser($id)) {
+            throw new RuntimeException(sprintf(
+                'Cannot update user with identifier %d; does not exist',
+                $id
+            ));
+        }
+
+        $this->tableGateway->update($data, ['id' => $id]);
+    }
+
 
     public function deleteUser($id)
     {

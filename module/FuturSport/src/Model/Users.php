@@ -103,7 +103,7 @@ class Users{
         ]);
          $inputFilter->add([
             'name' => 'password',
-            'required' => true,
+            'required' => false,
             'filters' => [
                 ['name' => StripTags::class],
                 ['name' => StringTrim::class],

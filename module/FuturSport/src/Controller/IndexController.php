@@ -67,7 +67,7 @@ class IndexController extends AbstractActionController
                     $estaRegitrat=$this->table->getUserRegister($username);
                     if(empty($estaRegitrat)){
                         $user=new Users($username, $password, $name, $surname, $rol_id);
-                        $this->table->saveUser($user);
+                        $this->table->newUser($user);
                         $entrar=$this->table->getUserRegister($username);
                         if(!empty($entrar)){
                             echo "Entro";

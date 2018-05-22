@@ -59,7 +59,7 @@ class AdminUsersController extends AbstractActionController{
             }
 
             $user->exchangeArray($form->getData());
-            $this->usersTable->saveUser($user);
+            $this->usersTable->newUser($user);
             $this->redirect()->toRoute('admin-users'); 
            }
            else{
@@ -76,6 +76,7 @@ class AdminUsersController extends AbstractActionController{
             }
             try {
                 $user = $this->usersTable->getUser($id);
+                $password=$user->password;
             } catch (\Exception $e) {
                 return $this->redirect()->toRoute('admin-users', ['action' => 'index']);
             }
@@ -99,7 +100,7 @@ class AdminUsersController extends AbstractActionController{
                 return $viewData;
             }
 
-            $this->usersTable->saveUser($user);
+            $this->usersTable->updateUser($user, $password);
 
             
             return $this->redirect()->toRoute('admin-users', ['action' => 'index']);    

@@ -3,7 +3,7 @@ namespace FuturSport\Form;
 
 use Zend\Form\Form;
 
-
+use Zend\Form\Element;
 class ProfileForm extends Form
 {
     public function __construct($name = null)
@@ -53,10 +53,10 @@ class ProfileForm extends Form
             ],
         ]);
        $this->add([
+            'type' => Element\Tel::class,
             'name' => 'telefon',
-            'type' => 'text',
             'options' => [
-                'label' => 'telefon: ',
+                'label' => 'Telefon',
             ],
         ]);
         $this->add([
