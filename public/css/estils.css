@@ -100,9 +100,13 @@
     margin-bottom: 0px;
 }
 
-imgPerfil{
-    width: 232px;
-    height: 232px;
+#imgPerfil{
+    width: 235px;
+    height: 235px;
+    padding: 2px;
     border-radius: 5px;
-    border: 2px solid white;
+    border: 1px double black;
+    position:absolute;
+    top:100px;
+    left:20px;
 }

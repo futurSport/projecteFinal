@@ -43,7 +43,7 @@ class CampController extends AbstractActionController{
             $resultats=$this->userTable->getAllRows($search);
             $jsonResultat=[];
             foreach($resultats as $resultat){
-                if($resultat['rol_name']!='admin'){
+                if($resultat['rol_name']!='admin' && $resultat['id']!=$this->access()->idUser()){
                     array_push($jsonResultat,  array('id'=>$resultat['id'],'name'=>utf8_encode($resultat['name']),'surname'=>utf8_encode($resultat['surname'])));
                 }
                 

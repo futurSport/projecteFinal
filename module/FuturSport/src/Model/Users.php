@@ -101,14 +101,19 @@ class Users{
                 ],
             ],
         ]);
-        $inputFilter->add([
+         $inputFilter->add([
             'name' => 'password',
             'required' => true,
+            'filters' => [
+                ['name' => StripTags::class],
+                ['name' => StringTrim::class],
+            ],
             'validators' => [
                 [
                     'name' => StringLength::class,
                     'options' => [
                         'min' => 8,
+                        'max' =>200,
                     ],
                 ],
             ],

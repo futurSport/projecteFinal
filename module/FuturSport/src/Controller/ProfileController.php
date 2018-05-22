@@ -137,9 +137,14 @@ class ProfileController extends AbstractActionController {
    
     public function tractarArray($data){
         
-        $this->thumbjpeg($data['photo'], 230, $data['id_user']); 
-        $data['photo']='/img/'.$data['id_user'].'/'.$data['photo']['name'];
-        
+        if(!empty($data['photo']['name'])){
+            
+            $this->thumbjpeg($data['photo'], 230, $data['id_user']); 
+            $data['photo']='/img/'.$data['id_user'].'/'.$data['photo']['name'];
+        }
+        else{
+           $data['photo']='/img/perfilAnonim.jpg';
+        }
         
         return $data;
         
@@ -167,8 +172,25 @@ class ProfileController extends AbstractActionController {
 
         // Aquí comprovamos que la imagen que queremos crear no exista previamente 
         if (!file_exists($caminoImagen)) {
+            switch($imagen['type']) {
+                case 'image/png':
+                  $img = imagecreatefrompng($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                  break;
+                case 'image/gif':
+                  $img = imagecreatefromgif($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                  break;
+                case 'image/jpeg':
+                  $img = imagecreatefromjpeg($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                  break;
+                case 'image/bmp':
+                  $img = imagecreatefrombmp($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                  break;
+                default:
+                  $img = null; 
+                }
+              
             
-            $img = imagecreatefromjpeg($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+           
 
             // miramos el tamaño de la imagen original... 
             $datos = getimagesize($imagen['tmp_name']) or die("Problemas con $camino$nombre<br>\n");
@@ -187,9 +209,5 @@ class ProfileController extends AbstractActionController {
             imagejpeg($rezise, $caminoImagen);
             
         }
-    }
-    
-    
-    
-
+   }
 }
