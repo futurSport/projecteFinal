@@ -1,8 +1,5 @@
-<?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<div id="divCapsalera" style="height: 400px; background-image: url('<?php if($user->rol_id==3){ echo $this->basePath(); ?>/img/aficio.jpg <?php }else if($user->rol_id==2){ echo $this->basePath();?>/img/camp.jpg <?php }?>')">
+    <div id="imgPerfil">
+        <img src="<?php echo $profile->photo; ?>" >
+    </div>
+</div>

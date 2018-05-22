@@ -88,8 +88,11 @@ class UsersTable
     }
     public function getAllRows($clausule=''){
         //$rows = $this->tableGateway->select(['name LIKE ?'=>'%'.$clausule.'%']);
-        $sql="select u.id, r.name as 'rol_name', u.name, u.surname, u.username from users u inner join rol r on u.rol_id=r.id where u.name LIKE '%".$clausule."%'";
+        $sql="select u.id, r.name as 'rol_name', u.name, u.surname, u.username from users u inner join rol r on u.rol_id=r.id where u.name LIKE '%".$clausule."%' OR u.surname LIKE '%".$clausule."%'";
         $rows=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
+        if (! $rows) {
+            return '';
+        }
         return $rows;
     }
 }

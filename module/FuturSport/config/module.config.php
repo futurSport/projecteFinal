@@ -52,9 +52,10 @@ return [
             'camp' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route' => '/camp[/:action]',
+                    'route' => '/camp[/:action[/:busqueda]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'busqueda' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         
                     ],
                     'defaults' => [

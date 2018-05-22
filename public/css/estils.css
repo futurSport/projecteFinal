@@ -69,3 +69,40 @@
   color: #333;
   border: 1px solid #ddd;
 }
+#divBusqueda{
+    display: none;
+    position:absolute;
+    background-color: white;
+    border:1px solid black;
+    border-radius: 5px;
+    z-index: 1;
+}
+#llistaBusqueda{
+    margin-top: 15px;
+    list-style:none;
+    padding-left: 0px;
+}
+#llistaBusqueda #libusc{
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    font-size: 20px;
+    border-bottom: 1px solid #272727;
+    
+}
+#divCapsalera{
+    margin-top:0px;
+    width: 100%;
+    
+    
+}
+#capçal{
+    margin-bottom: 0px;
+}
+
+imgPerfil{
+    width: 232px;
+    height: 232px;
+    border-radius: 5px;
+    border: 2px solid white;
+}

@@ -32,6 +32,7 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+        
         if(!isset($_SESSION['usuariConectat'])){             
             
             $rols=$this->getRolsforSelect();
@@ -67,8 +68,9 @@ class IndexController extends AbstractActionController
                     if(empty($estaRegitrat)){
                         $user=new Users($username, $password, $name, $surname, $rol_id);
                         $this->table->saveUser($user);
-                       $entrar=$this->table->getUserRegister($username);
+                        $entrar=$this->table->getUserRegister($username);
                         if(!empty($entrar)){
+                            echo "Entro";
                             $this->createSession($entrar);
                         }
                         else{
@@ -95,6 +97,7 @@ class IndexController extends AbstractActionController
             }
         }      
         else{
+            
              $this->redirect()->toRoute($this->access()->checkAccess());
         }
         

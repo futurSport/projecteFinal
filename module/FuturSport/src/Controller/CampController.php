@@ -7,7 +7,7 @@ use FuturSport\Model\UsersTable;
 use FuturSport\Model\ProfilesTable;
 
 
-;
+use Zend\View\Model\ViewModel;
 
 class CampController extends AbstractActionController{
     private $userTable;
@@ -33,5 +33,26 @@ class CampController extends AbstractActionController{
         else{
             $this->redirect()->toRoute('index');
         }
+    }
+    public function searchAction(){
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        $search=(string) $this->params()->fromRoute('busqueda', '');
+        
+        if($search!=''){
+            $resultats=$this->userTable->getAllRows($search);
+            $jsonResultat=[];
+            foreach($resultats as $resultat){
+                if($resultat['rol_name']!='admin'){
+                    array_push($jsonResultat,  array('id'=>$resultat['id'],'name'=>utf8_encode($resultat['name']),'surname'=>utf8_encode($resultat['surname'])));
+                }
+                
+            }
+           
+            
+             echo json_encode($jsonResultat);
+        }
+        
+        return $view;
     }
 }
