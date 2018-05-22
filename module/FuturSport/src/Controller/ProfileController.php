@@ -28,8 +28,9 @@ class ProfileController extends AbstractActionController {
     
     public function FirstProfileAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
-        if($this->access()->logat()){
-            if ($idUser > 0) {
+        if($this->access()->logat() ){
+            
+            if ($idUser==$this->access()->idUser()) {
                 if($this->profileTable->getPerfilUser($idUser)==false){
                     $form = new ProfileForm();
                     $form->get('submit')->setValue('Actualitzar Perfil');
@@ -64,9 +65,11 @@ class ProfileController extends AbstractActionController {
                     $this->redirect()->toRoute('camp');
             }
             else {
-            $this->access()->destroySession();
-            $this->redirect()->toRoute('index');
-        }
+                $this->redirect()->toRoute('profile', array(
+                    'controller' => 'profile',
+                    'action' =>  'profile',
+                    'id' =>$idUser ));
+            }
         }
         else {
             $this->access()->destroySession();
@@ -77,21 +80,21 @@ class ProfileController extends AbstractActionController {
     public function profileAction(){
         $idUser = (int) $this->params()->fromRoute('id', 0);
         if($this->access()->logat()!=0){
-            if ($idUser > 0) {
-                $profile=$this->profileTable->getPerfilUser($idUser);
+            $profile=$this->profileTable->getPerfilUser($idUser);
+            if ($idUser==$this->access()->idUser()) {
                 if($profile==false){
                      $this->redirect()->toRoute('profile', array(
                     'controller' => 'profile',
                     'action' =>  'first-profile',
                     'id' =>$idUser ));
                 }
-                else{
-                   $user=$this->usersTable->getUser($idUser);
-                   return ['user'=>$user,
-                            'profile'=>$profile];
-                   
-                }
+                
             }
+            $user=$this->usersTable->getUser($idUser);
+            return ['user'=>$user,
+                     'profile'=>$profile];
+                   
+                
         }    
     }
     
@@ -135,7 +138,7 @@ class ProfileController extends AbstractActionController {
     public function tractarArray($data){
         
         $this->thumbjpeg($data['photo'], 230, $data['id_user']); 
-        $data['photo']=getcwd().'\public\img\\'.$data['id_user'].'\\'.$data['photo']['name'];
+        $data['photo']='/img/'.$data['id_user'].'/'.$data['photo']['name'];
         
         
         return $data;
