@@ -40,4 +40,21 @@ class ProfilesTable{
          }
          return false;
     }
+    public function updateProfile(Profiles $profile){
+        
+         $data = [
+            'id_user' => $profile->id_user,
+            'photo'  => $profile->photo,
+            'id_provincia' => $profile->id_provincia,
+            'id_comarca'  => $profile->id_comarca,
+            'poblacio' =>$profile->poblacio,
+            'direccio'=>$profile->direccio,
+            'telefon'=>$profile->telefon
+             
+        ];
+         if($this->tableGateway->update($data)){
+             return true;
+         }
+         return false;
+    }
 }
