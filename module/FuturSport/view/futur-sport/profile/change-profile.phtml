@@ -1,0 +1,96 @@
+
+<div class='form formProfile col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 '>
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="formProfileImg">
+        <img class="img-circle" src="<?= $this->basePath(); ?>/img/perfilAnonim.jpg" alt="imatge de perfil" id="img-profile">
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <?php
+// This provides a default CSS class and placeholder text for the title element:
+        $photo = $form->get('photo');
+        $photo->setAttribute('class', 'form-control');
+        $photo->setAttribute('onchange', 'uploadTempImg(this);');
+        //$potho->setAttribute('onchange', 'readURL(this);');
+        
+
+// This provides a default CSS class and placeholder text for the artist element:
+        $id_provincia = $form->get('id_provincia');
+        $id_provincia->setAttribute('class', 'form-control');
+         $id_provincia->setAttribute('id', 'provincia');
+         $id_provincia->setAttribute('onchange', 'selectComarca();');
+     
+
+        $id_comarca = $form->get('id_comarca');
+        $id_comarca->setAttribute('class', 'form-control');
+        $id_comarca->setAttribute('id', 'selectComarques');
+        
+        
+
+        $poblacio = $form->get('poblacio');
+        $poblacio->setAttribute('class', 'form-control');
+        $poblacio->setAttribute('placeholder', 'Població');
+        
+        $direccio = $form->get('direccio');
+        $direccio->setAttribute('class', 'form-control');
+        $direccio->setAttribute('placeholder', 'C/...');
+
+        $telefon = $form->get('telefon');
+        $telefon->setAttribute('class', 'form-control');
+        $telefon->setAttribute('placeholder', 'Telefon');
+        
+        //$id_user=$form->get('id_user');
+        //$id_user->setAttribute('value', $id_user);
+        
+        // This provides CSS classes for the submit button:
+        $submit = $form->get('submit');
+        $submit->setAttribute('class', 'btn btn-primary');
+        ?>
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+            <?php
+            $form->setAttribute('action', $this->url('profile', ['action' => 'first-profile', 'id'=>$id_user]));
+            $form->setAttribute('enctype', 'multipart/form-data');
+            $form->prepare();
+
+            echo $this->form()->openTag($form);
+            ?>
+            <?php // Wrap the elements in divs marked as form groups, and render the
+            // label, element, and errors separately within 
+            ?>
+            <div class="form-group">
+                <?= $this->formLabel($photo) ?>
+                <?= $this->formFile($photo) ?>
+                <?= $this->formElementErrors()->render($photo, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($id_provincia) ?>
+                <?= $this->formElement($id_provincia) ?>
+                <?= $this->formElementErrors()->render($id_provincia, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($id_comarca) ?>
+                <?= $this->formElement($id_comarca) ?>
+                <?= $this->formElementErrors()->render($id_comarca, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($poblacio) ?>
+                <?= $this->formElement($poblacio) ?>
+                <?= $this->formElementErrors()->render($poblacio, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($direccio) ?>
+                <?= $this->formElement($direccio) ?>
+                <?= $this->formElementErrors()->render($direccio, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($telefon) ?>
+                <?= $this->formElement($telefon) ?>
+                <?= $this->formElementErrors()->render($telefon, ['class' => 'help-block']) ?>
+            </div>
+
+            <?php
+            echo $this->formSubmit($submit);
+            echo $this->formHidden($form->get('id_user'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    </div>    
+</div>

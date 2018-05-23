@@ -90,12 +90,57 @@ class ProfileController extends AbstractActionController {
                 }
                 
             }
-            $user=$this->usersTable->getUser($idUser);
+            $user=$this->usersTable->getUserPerfil($idUser);
             return ['user'=>$user,
                      'profile'=>$profile];
                    
                 
         }    
+    }
+    public function changeProfileAction(){
+        $idUser = (int) $this->params()->fromRoute('id', 0);
+        if($this->access()->logat()!=0){
+            $profile=$this->profileTable->getPerfilUser($idUser);
+            if ($idUser==$this->access()->idUser()) {
+                if($profile==false){
+                     $this->redirect()->toRoute('profile', array(
+                    'controller' => 'profile',
+                    'action' =>  'first-profile',
+                    'id' =>$idUser ));
+                }
+                 $form = new ProfileForm();
+                    $form->get('submit')->setValue('Actualitzar Perfil');
+                    $form->get('id_user')->setValue($idUser);
+                    $provincies = $this->getProvinciesforSelect();
+                    $form->get('id_provincia')->setValueOptions($provincies);
+                    $comarca['']="-Selccioni una comarca-";
+                    $form->get('id_comarca')->setValueOptions($comarca);
+                    $request = $this->getRequest();
+                    if (!$request->isPost()) {
+                        return ['form' => $form,
+                                'id_user'=>$idUser];
+                    }
+                    $post = array_merge_recursive(
+                        $request->getPost()->toArray(),
+                        $request->getFiles()->toArray()
+                    );
+                    $profileUser = new Profiles();
+                    $form->setInputFilter($profileUser->getInputFilter());
+                    $form->setData($post);
+
+                    if (!$form->isValid()) {
+                        return ['form' => $form,
+                            'id_user'=>$idUser];
+                    }
+                    $data=$form->getData();
+                    $data=$this->tractarArray($data);
+                    $profileUser->exchangeArray($data);
+                    $this->profileTable->saveProfile($profileUser);
+
+                
+            }
+            
+        }
     }
     
     

@@ -1,5 +1,14 @@
-<div id="divCapsalera" style="height: 400px; background-image: url('<?php if($user->rol_id==3){ echo $this->basePath(); ?>/img/aficio.jpg <?php }else if($user->rol_id==2){ echo $this->basePath();?>/img/camp.jpg <?php }?>')">
-    <div id="imgPerfil">
-        <img src="<?php echo $this->basePath().$profile->photo; ?>" >
-    </div>
+
+<div id="divCapsalera" style="height: 400px; background-image: url('<?php if($user['rol_name']=='aficionat'){ echo $this->basePath(); ?>/img/aficio.jpg <?php }else if($user['rol_name']=='jugador'){ echo $this->basePath();?>/img/camp.jpg <?php }?>')">
+     <div class="row>">    
+        <div id="imgPerfil" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+            <img src="<?php echo $this->basePath().$profile->photo; ?>" >
+            <?php if($_SESSION['usuariConectat']['id']==$user['id']){ ?><a id="configuracio" alt="canviar perfil" href="<?= $this->url('profile',['action'=>'change-profile','id' =>$user['id']])?>" class="btn btn-warning"><i class="fa fa-cog"></i></a><?php }?>
+        </div>
+   
+        <div id="divNom" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
+            <h1><?= $user['name'].' '.$user['surname']; ?></h1>
+            <h2><?= $user['rol_name']; ?></h2>
+        </div>
+    </div>        
 </div>

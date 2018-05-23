@@ -70,7 +70,6 @@ class IndexController extends AbstractActionController
                         $this->table->newUser($user);
                         $entrar=$this->table->getUserRegister($username);
                         if(!empty($entrar)){
-                            echo "Entro";
                             $this->createSession($entrar);
                         }
                         else{
