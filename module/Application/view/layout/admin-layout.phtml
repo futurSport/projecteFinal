@@ -52,17 +52,17 @@
                                 <a href="#"><i class="fa fa-globe fa-lg"></i> LLocs <span class="arrow"></span></a>
                             </li>  
                             <ul class="sub-menu collapse" id="service">
-                                <li> <a href=""><i class="fa fa-map-marker fa-lg"></i> Provincies</a></li>
-                               <li> <a href=""><i class="fa fa-map-marker fa-lg"></i> Comarques</a></li>
+                                <li> <a href="<?php echo $this->url('admin-provincies');?>"><i class="fa fa-map-marker fa-lg"></i> Provincies</a></li>
+                               <li> <a href="<?php echo $this->url('admin-comarques');?>"><i class="fa fa-map-marker fa-lg"></i> Comarques</a></li>
                                 
                             </ul>
 
 
                             <li data-toggle="collapse" data-target="#new" class="collapsed">
-                                <a href="#"><i class="fa fa-futbol-o fa-lg"></i> Futbol <span class="arrow"></span></a>
+                                <a href=""><i class="fa fa-futbol-o fa-lg"></i> Futbol <span class="arrow"></span></a>
                             </li>
                             <ul class="sub-menu collapse" id="new">
-                                <li> <a href=""><i class="fa fa-list-ul fa-lg"></i>Categories de Fútbol</a></li>
+                                <li> <a href="<?php echo $this->url('admin-categories');?>"><i class="fa fa-list-ul fa-lg"></i>Categories de Fútbol</a></li>
                                  <li> <a href=""><i class="fa fa-sitemap fa-lg"></i>Posicions de Fútbol</a></li>
                             </ul>
 

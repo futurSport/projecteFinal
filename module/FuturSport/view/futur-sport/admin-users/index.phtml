@@ -34,7 +34,7 @@
                         <td><?php echo $user['rol_name']; ?></td>
                         <td align="center">
                             <a href="<?= $this->url('admin-users', ['action' => 'update', 'id' => $user['id']]); ?>" class="btn btn-warning"><em class="fa fa-pencil"></em></a>
-                            <button data-id="<?= $user['id'] ?>" class="btn btn-danger deleteUser"><em class="fa fa-trash"></em></button>
+                            <button data-id="<?= $user['id'] ?>" data-controller="admin-users" class="btn btn-danger delete"><em class="fa fa-trash"></em></button>
                         </td>
                     </tr>
                 <?php } ?>  

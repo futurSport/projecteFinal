@@ -13,6 +13,9 @@ return [
             Controller\AdminController::class=> Controller\Factory\AdminControllerFactory::class,
             Controller\AdminUsersController::class=> Controller\Factory\AdminUsersControllerFactory::class,
             Controller\ProfileController::class=> Controller\Factory\ProfileControllerFactory::class,
+            Controller\AdminProvinciesController::class=> Controller\Factory\AdminProvinciesControllerFactory::class,
+            Controller\AdminComarquesController::class=> Controller\Factory\AdminComarquesControllerFactory::class,
+            Controller\AdminCategoriesController::class=> Controller\Factory\AdminCategoriesControllerFactory::class,
         ],
     ],
     /*'router' => [
@@ -99,6 +102,48 @@ return [
                     'defaults' => [
                         'controller' => Controller\ProfileController::class,
                         
+                    ],
+                ],
+            ],
+            'admin-provincies' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-provincies[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminProvinciesController::class,
+                        'action'=>'index',
+                    ],
+                ],
+            ],
+            'admin-comarques' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-comarques[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminComarquesController::class,
+                        'action'=>'index',
+                    ],
+                ],
+            ],
+             'admin-categories' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-categories[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminCategoriesController::class,
+                        'action'=>'index',
                     ],
                 ],
             ],

@@ -26,7 +26,7 @@ class ProfileForm extends Form
             'name' => 'id_provincia',
             'type' => 'select',
             'options' => [
-                'label' => 'Provincia: ',
+                'label' => 'Província: ',
             ],
         ]);
        $this->add([

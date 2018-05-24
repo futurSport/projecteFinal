@@ -1,0 +1,47 @@
+<div class="clearfix">
+    <h1 id="logo">
+        Gestió de Comarques
+    </h1>
+</div><br>
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-6">
+                <h3 class="panel-title">Comarques</h3>
+            </div>
+            <div class="col col-xs-6 text-right">
+                <a href="<?= $this->url('admin-comarques', ['action' => 'add']) ?>" type="button" class="btn btn-sm btn-primary btn-create">Agregar Comarca</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-list">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Provincia</th>
+                    <th  style="width:100px; text-align: center;"><em class="fa fa-cog"></em></th>
+                </tr> 
+            </thead>
+            <tbody>
+                
+                <?php foreach ($comarques as $comarca) { ?>
+      
+                    <tr>
+                        <td><?php echo utf8_encode($comarca['name']); ?></td>
+                        <td><?php echo $comarca['pro_name']; ?></td>
+                        <td align="center">
+                            <a href="<?= $this->url('admin-comarques', ['action' => 'update', 'id' => $comarca['id']]); ?>" class="btn btn-warning"><em class="fa fa-pencil"></em></a>
+                            <button data-id="<?= $comarca['id']; ?>" data-controller="admin-comarques" class="btn btn-danger delete"><em class="fa fa-trash"></em></button>
+                        </td>
+                    </tr>
+                <?php } ?>  
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+

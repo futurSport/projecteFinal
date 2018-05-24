@@ -1,23 +1,19 @@
 <?php
-
 namespace FuturSport\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
-use FuturSport\Model\UsersTable;
-use FuturSport\Model\RolTable;
-use FuturSport\Form\UsersForm;
-use FuturSport\Model\Users;
+use FuturSport\Model\CategoriesTable;
+use FuturSport\Model\Categories;
+use FuturSport\Form\CategoriesForm;
 
-class AdminUsersController extends AbstractActionController {
+class AdminCategoriesController extends AbstractActionController {
 
-    private $usersTable;
-    private $rolTable;
+    private $categoriesTable;
 
-    public function __construct(UsersTable $userTable, RolTable $rolTable) {
-        $this->usersTable = $userTable;
-        $this->rolTable = $rolTable;
+    public function __construct(CategoriesTable $categoriesTable) {
+        $this->categoriesTable = $categoriesTable;
     }
 
     public function onDispatch(MvcEvent $e) {
@@ -33,7 +29,7 @@ class AdminUsersController extends AbstractActionController {
 
     public function indexAction() {
         if ($this->access()->isAdmin()) {
-            return ['users' => $this->usersTable->getAllRows()];
+            return ['categories' => $this->categoriesTable->getAllRowsOrd()];
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
@@ -42,26 +38,25 @@ class AdminUsersController extends AbstractActionController {
 
     public function addAction() {
         if ($this->access()->isAdmin()) {
-            $form = new UsersForm();
-            $form->get('submit')->setValue('Agregar Usuari');
-            $rol = $this->getRolsforSelect();
-            $form->get('rol_id')->setValueOptions($rol);
+            $form = new CategoriesForm();
+            $form->get('submit')->setValue('Agregar Categoria');
+
             $request = $this->getRequest();
             if (!$request->isPost()) {
                 return ['form' => $form];
             }
 
-            $user = new Users();
-            $form->setInputFilter($user->getInputFilter());
+            $categoria = new Categories();
+            $form->setInputFilter($categoria->getInputFilter());
             $form->setData($request->getPost());
 
             if (!$form->isValid()) {
                 return ['form' => $form];
             }
 
-            $user->exchangeArray($form->getData());
-            $this->usersTable->newUser($user);
-            $this->redirect()->toRoute('admin-users');
+            $categoria->exchangeArray($form->getData());
+            $this->categoriesTable->saveCategoria($categoria);
+            $this->redirect()->toRoute('admin-categories');
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
@@ -73,19 +68,17 @@ class AdminUsersController extends AbstractActionController {
             $id = (int) $this->params()->fromRoute('id', 0);
 
             if (0 === $id) {
-                return $this->redirect()->toRoute('admin-users');
+                return $this->redirect()->toRoute('admin-categories');
             }
             try {
-                $user = $this->usersTable->getUser($id);
-                $password = $user->password;
+                $categoria = $this->categoriesTable->getCategoria($id);
             } catch (\Exception $e) {
-                return $this->redirect()->toRoute('admin-users', ['action' => 'index']);
+                return $this->redirect()->toRoute('admin-categories', ['action' => 'index']);
             }
-            $form = new UsersForm();
-            $form->bind($user);
-            $form->get('submit')->setAttribute('value', 'Modificar Usuari');
-            $rol = $this->getRolsforSelect();
-            $form->get('rol_id')->setValueOptions($rol);
+            $form = new CategoriesForm();
+            $form->bind($categoria);
+            $form->get('submit')->setAttribute('value', 'Modificar categoria');
+
             $request = $this->getRequest();
 
             $viewData = ['id' => $id, 'form' => $form];
@@ -94,17 +87,17 @@ class AdminUsersController extends AbstractActionController {
                 return $viewData;
             }
 
-            $form->setInputFilter($user->getInputFilter());
+            $form->setInputFilter($categoria->getInputFilter());
             $form->setData($request->getPost());
 
             if (!$form->isValid()) {
                 return $viewData;
             }
 
-            $this->usersTable->updateUser($user, $password);
+            $this->categoriesTable->saveCategoria($categoria);
 
 
-            return $this->redirect()->toRoute('admin-users', ['action' => 'index']);
+            return $this->redirect()->toRoute('admin-categories', ['action' => 'index']);
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
@@ -112,17 +105,16 @@ class AdminUsersController extends AbstractActionController {
     }
 
     public function deleteAction() {
-        
         if ($this->access()->isAdmin()) {
             $view = new ViewModel();
             $view->setTerminal(true);
 
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) {
-                $this->redirect()->toRoute('admin-users');
+                $this->redirect()->toRoute('admin-categories');
             }
 
-           if ($this->usersTable->deleteUser($id)) {
+            if ($this->categoriesTable->deleteCategoria($id)) {
                 echo "1";
             } else {
                 echo "0";
@@ -133,17 +125,7 @@ class AdminUsersController extends AbstractActionController {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
-        
     }
+    
+}    
 
-    public function getRolsforSelect() {
-        $rols = $this->rolTable->fetchAll();
-        foreach ($rols as $rol) {
-
-            $key = $rol->id;
-            $role[$key] = $rol->name;
-        }
-        return $role;
-    }
-
-}

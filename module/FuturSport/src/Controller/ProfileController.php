@@ -212,7 +212,7 @@ class ProfileController extends AbstractActionController {
     
     
     public function getProvinciesforSelect(){
-        $provincies=$this->provinciesTable->fetchAll();
+        $provincies=$this->provinciesTable->getAllRowsOrd();
         $provin['']='-Seleccioni una provinica-';
         foreach($provincies as $provincia){
             

@@ -1,8 +1,10 @@
 $(document).ready(function(){
-    $('.deleteUser').click(function(){
+    $('.delete').click(function(){
         var id=$(this).attr('data-id');
+        var controller=$(this).attr('data-controller');
+        var ruta="/projecteFinal/public/"+controller+"/delete/";
          var father=$(this).parents("tr");
-        $.post( "/projecteFinal/public/admin-users/delete/"+id, function( data ) {
+        $.post(ruta+id, function( data ) {
             
             if(data==1){
                 father.hide(1000, function(){
@@ -10,10 +12,11 @@ $(document).ready(function(){
                 });
             }
             else{
-                alert("ERROR AL ELIMINAR USUARI");
+                alert("ERROR ");
             }
         });
     });
+    
     $('#search').click(function(){
          $('#divBusqueda').css("display", "inline");
          
