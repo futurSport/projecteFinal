@@ -1,22 +1,24 @@
 <?php
+
 namespace FuturSport\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
-use FuturSport\Model\CategoriesTable;
-use FuturSport\Model\Categories;
-use FuturSport\Form\CategoriesForm;
+use FuturSport\Model\CompeticionsTable;
+use FuturSport\Model\Competicions;
+use FuturSport\Form\CompeticionsForm;
 
-class AdminCategoriesController extends AbstractActionController {
 
-    private $categoriesTable;
 
-    public function __construct(CategoriesTable $categoriesTable) {
-        $this->categoriesTable = $categoriesTable;
+
+class AdminCompeticionsController extends AbstractActionController {
+     private $competicionsTable;
+
+    public function __construct(CompeticionsTable $competicionsTable) {
+        $this->competicionsTable = $competicionsTable;
     }
-
-    public function onDispatch(MvcEvent $e) {
+     public function onDispatch(MvcEvent $e) {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 
@@ -29,55 +31,53 @@ class AdminCategoriesController extends AbstractActionController {
 
     public function indexAction() {
         if ($this->access()->isAdmin()) {
-            return ['categories' => $this->categoriesTable->fetchAll()];
+            return ['competicions' => $this->competicionsTable->getAllRowsOrd()];
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
-
-    public function addAction() {
+    public function addAction(){
         if ($this->access()->isAdmin()) {
-            $form = new CategoriesForm();
-            $form->get('submit')->setValue('Agregar Categoria');
+            $form = new CompeticionsForm();
+            $form->get('submit')->setValue('Agregar Competicio');
 
             $request = $this->getRequest();
             if (!$request->isPost()) {
                 return ['form' => $form];
             }
 
-            $categoria = new Categories();
-            $form->setInputFilter($categoria->getInputFilter());
+            $competicio = new Competicions();
+            $form->setInputFilter($competicio->getInputFilter());
             $form->setData($request->getPost());
 
             if (!$form->isValid()) {
                 return ['form' => $form];
             }
 
-            $categoria->exchangeArray($form->getData());
-            $this->categoriesTable->saveCategoria($categoria);
-            $this->redirect()->toRoute('admin-categories');
+            $competicio->exchangeArray($form->getData());
+            $this->competicionsTable->saveCompeticio($competicio);
+            $this->redirect()->toRoute('admin-competicions');
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
-
-    public function updateAction() {
+    public function updateAction(){
         if ($this->access()->isAdmin()) {
             $id = (int) $this->params()->fromRoute('id', 0);
 
             if (0 === $id) {
-                return $this->redirect()->toRoute('admin-categories');
+                return $this->redirect()->toRoute('admin-competicions');
             }
             try {
-                $categoria = $this->categoriesTable->getCategoria($id);
+                $competicions = $this->competicionsTable->getCompeticio($id);
             } catch (\Exception $e) {
                 return $this->redirect()->toRoute('admin-categories', ['action' => 'index']);
             }
-            $form = new CategoriesForm();
-            $form->bind($categoria);
-            $form->get('submit')->setAttribute('value', 'Modificar categoria');
+            $form = new CompeticionsForm();
+            $form->bind($competicions);
+            $form->get('submit')->setAttribute('value', 'Modificar competició');
 
             $request = $this->getRequest();
 
@@ -87,23 +87,22 @@ class AdminCategoriesController extends AbstractActionController {
                 return $viewData;
             }
 
-            $form->setInputFilter($categoria->getInputFilter());
+            $form->setInputFilter($competicions->getInputFilter());
             $form->setData($request->getPost());
 
             if (!$form->isValid()) {
                 return $viewData;
             }
 
-            $this->categoriesTable->saveCategoria($categoria);
+            $this->competicionsTable->saveCompeticio($competicions);
 
 
-            return $this->redirect()->toRoute('admin-categories', ['action' => 'index']);
+            return $this->redirect()->toRoute('admin-competicions', ['action' => 'index']);
         } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
-
     public function deleteAction() {
         if ($this->access()->isAdmin()) {
             $view = new ViewModel();
@@ -114,7 +113,7 @@ class AdminCategoriesController extends AbstractActionController {
                 $this->redirect()->toRoute('admin-categories');
             }
 
-            if ($this->categoriesTable->deleteCategoria($id)) {
+            if ($this->competicionsTable->deleteCompeticio($id)) {
                 echo "1";
             } else {
                 echo "0";
@@ -126,6 +125,7 @@ class AdminCategoriesController extends AbstractActionController {
             $this->redirect()->toRoute('index');
         }
     }
-    
-}    
 
+    
+    
+}

@@ -89,14 +89,34 @@ class Module implements ConfigProviderInterface {
                     return new TableGateway('player_position', $dbAdapter, null, $resultSetPrototype);
                 },
                 Model\CategoriesTable::class => function($container) {
-                    $tableGateway = $container->get(Model\CategoriesTableTableGateway::class);
+                    $tableGateway = $container->get(Model\CategoriesTableGateway::class);
                     return new Model\CategoriesTable($tableGateway);
                 },
-                Model\CategoriesTableTableGateway::class => function ($container) {
+                Model\CategoriesTableGateway::class => function ($container) {
                     $dbAdapter = $container->get(AdapterInterface::class);
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Categories());
                     return new TableGateway('categories', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\CompeticionsTable::class => function($container) {
+                    $tableGateway = $container->get(Model\CompeticionsTableGateway::class);
+                    return new Model\CompeticionsTable($tableGateway);
+                },
+                Model\CompeticionsTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Competicions());
+                    return new TableGateway('competicio', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\PosicionsTable::class => function($container) {
+                    $tableGateway = $container->get(Model\PosicionsTableGateway::class);
+                    return new Model\PosicionsTable($tableGateway);
+                },
+                Model\PosicionsTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Posicions());
+                    return new TableGateway('player_position', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

@@ -10,11 +10,10 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
 
-class Categories{
+class Posicions{
     public $id;
     public $name;
-    public $cat_competicio;
-    
+   
     private $inputFilter;
     
     /* public function __construct($name, $description, $id=null) {
@@ -29,15 +28,13 @@ class Categories{
     public function exchangeArray(array $data)
     {
         $this->id     = !empty($data['id']) ? $data['id'] : null;
-        $this->name = !empty($data['name']) ? $data['name'] : null;  
-         $this->cat_competicio = !empty($data['cat_competicio']) ? $data['cat_competicio'] : null;  
+        $this->name = !empty($data['name']) ? $data['name'] : null;     
     }
      public function getArrayCopy()
     {
         return [
             'id'     => $this->id,
             'name' => $this->name,
-            'cat_competicio'=>$this->cat_competicio,
             
         ];
     }
@@ -81,12 +78,8 @@ class Categories{
                 ],
             ],
         ]);
-        $inputFilter->add([
-            'name' => 'cat_competicio',
-            'required' => false,
-            
-        ]);
         $this->inputFilter = $inputFilter;
         return $this->inputFilter;
     }
 }
+

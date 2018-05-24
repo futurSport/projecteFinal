@@ -15,6 +15,7 @@ class ProfilesPlayer{
     public $id_user;
     public $team;
     public $id_categoria;
+    public $id_competicio;
     public $id_position;
     public $age;
     public $weight;
@@ -25,6 +26,7 @@ class ProfilesPlayer{
     public function getId_user(){return $this->id_user;}
     public function getTeam(){return $this->team;}
     public function getId_categoria(){return $this->id_categoria;}
+    public function getId_competicio(){return $this->id_competicio;}
     public function getId_position(){return $this->id_position;}
     public function getAge(){return $this->age;}
     public function getWeight(){return $this->weight;}
@@ -34,6 +36,7 @@ class ProfilesPlayer{
         $this->id_user     = !empty($data['id_user']) ? $data['id_user'] : null;
         $this->team = !empty($data['team']) ? $data['team'] : null;
         $this->id_categoria  = !empty($data['id_categoria']) ? $data['id_categoria'] : null;
+        $this->id_competicio  = !empty($data['id_competicio']) ? $data['id_competicio'] : null;
         $this->id_position = !empty($data['id_position']) ? $data['id_position'] : null;
         $this->age  = !empty($data['age']) ? $data['age'] : null;
         $this->weight  = !empty($data['weight']) ? $data['weight'] : null;
@@ -47,7 +50,7 @@ class ProfilesPlayer{
             'id_categoria'  => $this->id_categoria,
             'id_position'  => $this->id_position,
             'age'  => $this->age,
-             'weight'  => $this->weight,
+            'weight'  => $this->weight,
         ];
     }
     
@@ -92,6 +95,10 @@ class ProfilesPlayer{
         ]);
         $inputFilter->add([
             'name' => 'id_categoria',
+            'required' => false,
+        ]);
+        $inputFilter->add([
+            'name' => 'id_competicio',
             'required' => false,
         ]);
         $inputFilter->add([

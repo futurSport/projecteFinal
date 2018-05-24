@@ -13,6 +13,7 @@ use FuturSport\Model\UsersTable;
 use FuturSport\Model\ProfilesPlayerTable;
 use FuturSport\Model\CategoriesTable;
 use FuturSport\Model\PlayerPositionTable;
+use FuturSport\Model\CompeticionsTable;
 
 
 class ProfileControllerFactory implements FactoryInterface{
@@ -24,7 +25,8 @@ class ProfileControllerFactory implements FactoryInterface{
                 $container->get(ComarquesTable::class),
                 $container->get(UsersTable::class),
                 $container->get(CategoriesTable::class),
-                $container->get(PlayerPositionTable::class)
+                $container->get(PlayerPositionTable::class),
+                $container->get(CompeticionsTable::class)
                 );
     }
 }

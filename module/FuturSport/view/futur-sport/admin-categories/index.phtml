@@ -19,16 +19,17 @@
             <thead>
                 <tr>
                     <th>Nom</th>
-                    
+                    <th>Nivell competició</th>
                     <th  style="width:100px; text-align: center;"><em class="fa fa-cog"></em></th>
                 </tr> 
             </thead>
             <tbody>
                 
                 <?php foreach ($categories as $categoria) { ?>
-      
+            
                     <tr>
                         <td><?php echo utf8_encode($categoria->name); ?></td>
+                        <td><?php echo utf8_encode($categoria->cat_competicio); ?></td>
                         <td align="center">
                             <a href="<?= $this->url('admin-categories', ['action' => 'update', 'id' => $categoria->id]); ?>" class="btn btn-warning"><em class="fa fa-pencil"></em></a>
                             <button data-id="<?= $categoria->id ?>" data-controller="admin-categories" class="btn btn-danger delete"><em class="fa fa-trash"></em></button>

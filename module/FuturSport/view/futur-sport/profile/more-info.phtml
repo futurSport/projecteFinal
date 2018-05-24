@@ -11,7 +11,14 @@
 // This provides a default CSS class and placeholder text for the artist element:
         $id_categoria = $form->get('id_categoria');
         $id_categoria->setAttribute('class', 'form-control');
+        $id_categoria->setAttribute('id', 'categoria');
+        $id_categoria->setAttribute('onchange', 'selectCompeticio()');
      
+        
+        $id_competicio = $form->get('id_competicio');
+        $id_competicio->setAttribute('class', 'form-control');
+        $id_competicio->setAttribute('id', 'selectCompeticions');
+        
         $id_position= $form->get('id_position');
         $id_position->setAttribute('class', 'form-control');
         
@@ -48,6 +55,11 @@
             <div class="form-group">
                 <?= $this->formLabel($id_categoria) ?>
                 <?= $this->formElement($id_categoria) ?>
+                <?= $this->formElementErrors()->render($id_categoria, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($id_competicio) ?>
+                <?= $this->formElement($id_competicio) ?>
                 <?= $this->formElementErrors()->render($id_categoria, ['class' => 'help-block']) ?>
             </div>
             <div class="form-group">

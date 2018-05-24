@@ -4,7 +4,8 @@ namespace FuturSport\Model;
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Db\Sql\Select;
-class CategoriesTable
+
+class PosicionsTable
 {
     private $tableGateway;
 
@@ -17,7 +18,8 @@ class CategoriesTable
     {
         return $this->tableGateway->select();
     }
-    public function getCategoria($id){
+    
+    public function getPosicio($id){
         $id = (int) $id;
         $rowset = $this->tableGateway->select(['id' => $id]);
         $row = $rowset->current();
@@ -32,33 +34,33 @@ class CategoriesTable
     }
     public function getAllRowsOrd(){
         $row = $this->tableGateway->select(function (Select $select) {
-            $select->order('name ASC');});
+        $select->order('name ASC');});
         return $row;
     }
-    public function saveCategoria(Categories $categoria){
+    
+    public function savePosicio(Posicions $posicio){
         $data = [
-            'id' => $categoria->id,
-            'name'  => $categoria->name,
-            'cat_competicio'=>$categoria->cat_competicio,
+            'id' => $posicio->id,
+            'name'  => $posicio->name,
         ];
 
-        $id = (int) $categoria->id;
+        $id = (int) $posicio->id;
 
         if ($id === 0) {
             $this->tableGateway->insert($data);
             return;
         }
 
-        if (! $this->getCategoria($id)) {
+        if (! $this->getPosicio($id)) {
             throw new RuntimeException(sprintf(
-                _('Cannot update categoria with identifier %d; does not exist'),
+                _('Cannot update provincia with identifier %d; does not exist'),
                 $id
             ));
         }
 
         $this->tableGateway->update($data, ['id' => $id]);
     }
-    public function deleteCategoria($id)
+    public function deleteProvincia($id)
     {
         if($this->tableGateway->delete(['id' => (int) $id])){
             return true;

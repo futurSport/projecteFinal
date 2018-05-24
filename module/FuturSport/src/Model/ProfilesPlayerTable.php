@@ -12,9 +12,20 @@ class ProfilesPlayerTable{
         $this->tableGateway = $tableGateway;
         
     }
+    public function getPerfil($id){
+        $row=$this->tableGateway->select(['id_user'=>$id]);
+        if(! $row){
+            return false;
+        }
+        return $row->current();
+    }
     public function getPerfilPlayer($id){
             $id = (int) $id;
-            $sql="select p.team, cat.name as 'cat_name', pos.name as 'pos_name', p.age, p.weight from player_profile p left join categories cat on cat.id=p.id_categoria left join player_position pos on pos.id=p.id_position where p.id_user=".$id;
+            $sql="select p.team, cat.name as 'cat_name', com.name as 'com_name',pos.name as 'pos_name', p.age, p.weight from player_profile p"
+                    . " left join categories cat on cat.id=p.id_categoria"
+                    . " left join player_position pos on pos.id=p.id_position"
+                    . " left join competicio com on com.id=p.id_competicio"
+                    . " where p.id_user=".$id;
             $rowset=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
  
             
@@ -31,15 +42,20 @@ class ProfilesPlayerTable{
             'id_user' => $profilePlayer->id_user,
             'team'  => $profilePlayer->team,
             'id_categoria' => $profilePlayer->id_categoria,
+            'id_competicio' => $profilePlayer->id_competicio,
             'id_position'  => $profilePlayer->id_position,
             'age' =>$profilePlayer->age,
-            'height'=>$profilePlayer->height,
             'weight'=>$profilePlayer->weight
              
         ];
-         if($this->tableGateway->insert($data)){
-             return true;
-         }
-         return false;
+         $id = (int) $profilePlayer->id_user;
+
+
+        if ($this->getPerfil($id)==false) {
+            $this->tableGateway->insert($data);
+            return;
+        }
+
+        $this->tableGateway->update($data, ['id_user' => $id]);
     }
 }

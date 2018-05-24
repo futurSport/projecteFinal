@@ -16,6 +16,9 @@ return [
             Controller\AdminProvinciesController::class=> Controller\Factory\AdminProvinciesControllerFactory::class,
             Controller\AdminComarquesController::class=> Controller\Factory\AdminComarquesControllerFactory::class,
             Controller\AdminCategoriesController::class=> Controller\Factory\AdminCategoriesControllerFactory::class,
+            Controller\AdminCompeticionsController::class=> Controller\Factory\AdminCompeticionsControllerFactory::class,
+            Controller\AdminPosicionsController::class=> Controller\Factory\AdminPosicionsControllerFactory::class,
+
         ],
     ],
     /*'router' => [
@@ -143,6 +146,34 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\AdminCategoriesController::class,
+                        'action'=>'index',
+                    ],
+                ],
+            ],
+            'admin-competicions' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-competicions[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminCompeticionsController::class,
+                        'action'=>'index',
+                    ],
+                ],
+            ],
+            'admin-posicions' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/admin-posicions[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AdminPosicionsController::class,
                         'action'=>'index',
                     ],
                 ],

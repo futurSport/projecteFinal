@@ -1,6 +1,6 @@
 <div class="clearfix">
     <h1 id="logo">
-        Agregar categoria
+        Agregar competicio
     </h1>
 </div><br>
 <?php
@@ -17,7 +17,7 @@ $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');?>
 <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
 <?php
-$form->setAttribute('action', $this->url('admin-categories', ['action' => 'add']));
+$form->setAttribute('action', $this->url('admin-competicions', ['action' => 'add']));
 $form->prepare();
 
 echo $this->form()->openTag($form);

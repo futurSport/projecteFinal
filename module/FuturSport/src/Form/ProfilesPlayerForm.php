@@ -30,6 +30,15 @@ class ProfilesPlayerForm extends Form
                 'label' => 'Categoria:',
             ],
         ]);
+       $this->add([
+            'name' => 'id_competicio',
+            'type' => 'select',
+            'options' => [
+                'label' => 'Categoria:',
+                'disable_inarray_validator' => true,
+
+            ],
+        ]);
          $this->add([
             'name' => 'id_position',
             'type' => 'select',

@@ -4,12 +4,12 @@ namespace FuturSport\Form;
 use Zend\Form\Form;
 
 
-class CategoriesForm extends Form
+class CompeticionsForm extends Form
 {
      public function __construct($name = null)
     {
         // We will ignore the name provided to the constructor
-        parent::__construct('provincies');
+        parent::__construct('competicions');
 
         $this->add([
             'name' => 'id',
@@ -20,17 +20,17 @@ class CategoriesForm extends Form
             'type' => 'text',
             
             'options' => [
-                'label' => 'Nom província: ',
+                'label' => 'Nom competicio: ',
             ],
         ]);
-        $this->add([
+         $this->add([
             'name' => 'cat_competicio',
             'type' => 'number',
             
             'options' => [
-                'label' => 'Nivell de competició: ',
+                'label' => 'Categoria competicio: ',
             ],
-            'attributes' => [
+             'attributes' => [
                 'min' => '0',
                 'max' => '10',
                 

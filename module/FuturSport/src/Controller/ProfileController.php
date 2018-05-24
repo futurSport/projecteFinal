@@ -15,10 +15,10 @@ use FuturSport\Model\ComarquesTable;
 use FuturSport\Model\ProfilesPlayerTable;
 use FuturSport\Model\CategoriesTable;
 use FuturSport\Model\PlayerPositionTable;
-
-
+use FuturSport\Model\CompeticionsTable;
 
 class ProfileController extends AbstractActionController {
+
     private $profileTable;
     private $profilePlayerTable;
     private $provinciesTable;
@@ -26,38 +26,39 @@ class ProfileController extends AbstractActionController {
     private $usersTable;
     private $categoriesTable;
     private $playerPositionTable;
-    
-    public function __construct(ProfilesTable $profileTable, ProfilesPlayerTable $profilePlayerTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable, CategoriesTable $categoriesTable, PlayerPositionTable $playerPositionTable) {
-        $this->profileTable=$profileTable;
-        $this->provinciesTable=$provinciesTable;
-        $this->profilePlayerTable=$profilePlayerTable;
-        $this->comarquesTable=$comarquesTable;
-        $this->usersTable=$usersTable;
-        $this->categoriesTable=$categoriesTable;
-        $this->playerPositionTable=$playerPositionTable;
+    private $competicioTable;
+
+    public function __construct(ProfilesTable $profileTable, ProfilesPlayerTable $profilePlayerTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable, CategoriesTable $categoriesTable, PlayerPositionTable $playerPositionTable, CompeticionsTable $competicioTable) {
+        $this->profileTable = $profileTable;
+        $this->provinciesTable = $provinciesTable;
+        $this->profilePlayerTable = $profilePlayerTable;
+        $this->comarquesTable = $comarquesTable;
+        $this->usersTable = $usersTable;
+        $this->categoriesTable = $categoriesTable;
+        $this->playerPositionTable = $playerPositionTable;
+        $this->competicioTable = $competicioTable;
     }
-    
-    public function FirstProfileAction() {
+
+    public function firstProfileAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
-        if($this->access()->logat() ){
-            
-            if ($idUser==$this->access()->idUser()) {
-                if($this->profileTable->getPerfilUser($idUser)==false){
+        if ($this->access()->logat()) {
+
+            if ($idUser == $this->access()->idUser()) {
+                if ($this->profileTable->getPerfilUser($idUser) == false) {
                     $form = new ProfileForm();
                     $form->get('submit')->setValue('Actualitzar Perfil');
                     $form->get('id_user')->setValue($idUser);
                     $provincies = $this->getProvinciesforSelect();
                     $form->get('id_provincia')->setValueOptions($provincies);
-                    $comarca['']="-Selccioni una comarca-";
+                    $comarca[''] = "-Selccioni una comarca-";
                     $form->get('id_comarca')->setValueOptions($comarca);
                     $request = $this->getRequest();
                     if (!$request->isPost()) {
                         return ['form' => $form,
-                                'id_user'=>$idUser];
+                            'id_user' => $idUser];
                     }
                     $post = array_merge_recursive(
-                        $request->getPost()->toArray(),
-                        $request->getFiles()->toArray()
+                            $request->getPost()->toArray(), $request->getFiles()->toArray()
                     );
                     $profileUser = new Profiles();
                     $form->setInputFilter($profileUser->getInputFilter());
@@ -65,53 +66,48 @@ class ProfileController extends AbstractActionController {
 
                     if (!$form->isValid()) {
                         return ['form' => $form,
-                            'id_user'=>$idUser];
+                            'id_user' => $idUser];
                     }
-                    $data=$form->getData();
-                    $data=$this->tractarArrayFirstProfile($data);
+                    $data = $form->getData();
+                    $data = $this->tractarArrayFirstProfile($data);
                     $profileUser->exchangeArray($data);
                     $this->profileTable->saveProfile($profileUser);
-
                 }
-                   $this->redirect()->toRoute('camp');
-            }
-            else {
+                $this->redirect()->toRoute('camp');
+            } else {
                 $this->redirect()->toRoute('profile', array(
                     'controller' => 'profile',
-                    'action' =>  'profile',
-                    'id' =>$idUser ));
+                    'action' => 'profile',
+                    'id' => $idUser));
             }
-        }
-        else {
+        } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
-    
-    public function profileAction(){
+
+    public function profileAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
-        if($this->access()->logat()!=0){
-            $profile=$this->profileTable->getPerfilUserCompleted($idUser);
-            if ($idUser==$this->access()->idUser()) {
-                if($profile==false){
-                     $this->redirect()->toRoute('profile', array(
-                    'controller' => 'profile',
-                    'action' =>  'first-profile',
-                    'id' =>$idUser ));
+        if ($this->access()->logat() != 0) {
+            $profile = $this->profileTable->getPerfilUserCompleted($idUser);
+            if ($idUser == $this->access()->idUser()) {
+                if ($profile == false) {
+                    $this->redirect()->toRoute('profile', array(
+                        'controller' => 'profile',
+                        'action' => 'first-profile',
+                        'id' => $idUser));
                 }
-                
             }
-            $user=$this->usersTable->getUserPerfil($idUser);
-            $profilePlayer=$this->profilePlayerTable->getPerfilPlayer($idUser);
-            return ['user'=>$user,
-                     'profile'=>$profile,
-                    'profilePlayer'=>$profilePlayer];
-                
-        }
-        else {
+            $user = $this->usersTable->getUserPerfil($idUser);
+            $profilePlayer = $this->profilePlayerTable->getPerfilPlayer($idUser);
+            return ['user' => $user,
+                'profile' => $profile,
+                'profilePlayer' => $profilePlayer];
+        } else {
             $this->redirect()->toRoute('index');
         }
     }
+
     public function changeProfileAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
         $profile = $this->profileTable->getPerfilUser($idUser);
@@ -164,179 +160,210 @@ class ProfileController extends AbstractActionController {
                 'controller' => 'profile',
                 'action' => 'profile',
                 'id' => $idUser));
-        }
-        else {
+        } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
 
-    public function moreInfoAction(){
+    public function moreInfoAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
-         if($this->access()->logat()!=0 && $idUser == $this->access()->idUser() && $this->access()->rol()=='jugador'){
+        if ($this->access()->logat() != 0 && $idUser == $this->access()->idUser() && $this->access()->rol() == 'jugador') {
             $form = new ProfilesPlayerForm();
-            $form->get('submit')->setValue('Afegir Informació');
+
             $form->get('id_user')->setValue($idUser);
             $categories = $this->getForSelectCategories();
             $form->get('id_categoria')->setValueOptions($categories);
             $positions = $this->getForSelectPosition();
             $form->get('id_position')->setValueOptions($positions);
+            $competicio[''] = "-Selccioni primer una categoria-";
+            $form->get('id_competicio')->setValueOptions($competicio);
+
 
             $request = $this->getRequest();
+            $profilePlayer = $this->profilePlayerTable->getPerfil($idUser);
+            if ($profilePlayer == false) {
+                $form->get('submit')->setValue('Afegir Informació');
+                $profilePlayer = new ProfilesPlayer();
+            } else {
+                $form->bind($profilePlayer);
+                $form->get('submit')->setAttribute('value', 'Modificar Informació');
+            }
             if (!$request->isPost()) {
                 return ['form' => $form,
-                        'id_user'=>$idUser];
+                    'id_user' => $idUser];
             }
 
-            $profilePlayer = new ProfilesPlayer();
+
             $form->setInputFilter($profilePlayer->getInputFilter());
             $form->setData($request->getPost());
 
             if (!$form->isValid()) {
                 return ['form' => $form,
-                    'id_user'=>$idUser];
+                    'id_user' => $idUser];
             }
-            $profilePlayer->exchangeArray($form->getData());
+            $profilePlayer->exchangeArray((array)$form->getData());
             $this->profilePlayerTable->newProfileUser($profilePlayer);
             $this->redirect()->toRoute('profile', array(
                 'controller' => 'profile',
                 'action' => 'profile',
                 'id' => $idUser));
-            
-         }
-         else {
+        } else {
             $this->access()->destroySession();
             $this->redirect()->toRoute('index');
         }
     }
-    
-    
-    public function getProvinciesforSelect(){
-        $provincies=$this->provinciesTable->getAllRowsOrd();
-        $provin['']='-Seleccioni una provinica-';
-        foreach($provincies as $provincia){
-            
-            $key=$provincia->id;
-            $provin[$key]=$provincia->name;
+
+    public function getProvinciesforSelect() {
+        $provincies = $this->provinciesTable->getAllRowsOrd();
+        $provin[''] = '-Seleccioni una provinica-';
+        foreach ($provincies as $provincia) {
+
+            $key = $provincia->id;
+            $provin[$key] = $provincia->name;
         }
         return $provin;
     }
-    public function getForSelectCategories(){
-        $categories=$this->categoriesTable->fetchAll();
-        $cat['']='-Seleccioni una categoria-';
-        foreach($categories as $categoria){
-            
-            $key=$categoria->id;
-            $cat[$key]=$categoria->name;
+
+    public function getForSelectCategories() {
+        $categories = $this->categoriesTable->fetchAll();
+        $cat[''] = '-Seleccioni una categoria-';
+        foreach ($categories as $categoria) {
+
+            $key = $categoria->id;
+            $cat[$key] = utf8_encode($categoria->name);
         }
         return $cat;
     }
-    public function getForSelectPosition(){
-        $positions=$this->playerPositionTable->fetchAll();
-        $pos['']='-La posició en la qual jugues-';
-        foreach($positions as $position){
-            
-            $key=$position->id;
-            $pos[$key]=$position->name;
+
+    public function getForSelectPosition() {
+        $positions = $this->playerPositionTable->fetchAll();
+        $pos[''] = '-La posició en la qual jugues-';
+        foreach ($positions as $position) {
+
+            $key = $position->id;
+            $pos[$key] = $position->name;
         }
         return $pos;
     }
-    public function selectComarquesAction(){
+
+    public function selectComarquesAction() {
         $view = new ViewModel();
         $view->setTerminal(true);
-        
+
         $id_provincia = (int) $this->params()->fromRoute('id', 0);
-        if ($id_provincia==0) {
+        if ($id_provincia == 0) {
             echo "0";
-        }
-        else{
-            $comarques=$this->comarquesTable->getComarques($id_provincia);
-            if($comarques==''){
+        } else {
+            $comarques = $this->comarquesTable->getComarques($id_provincia);
+            if ($comarques == '') {
                 echo 0;
+            } else {
+                $jsonComar = [];
+
+                array_push($jsonComar, array("", "-Seleccioni una comarca-"));
+                foreach ($comarques as $comarca) {
+
+                    array_push($jsonComar, array($comarca->id, utf8_encode($comarca->name)));
+                }
+
+                echo json_encode($jsonComar);
             }
-            $jsonComar=[];
-
-            array_push($jsonComar,  array("", "-Seleccioni una comarca-"));
-            foreach($comarques as $comarca){
-
-                array_push($jsonComar,  array($comarca->id, utf8_encode($comarca->name)));
-            }
-
-            echo json_encode($jsonComar);
         }
         return $view;
     }
-   
-    public function tractarArrayFirstProfile($data){
-        
-        if(!empty($data['photo']['name'])){
-            
-            $this->thumbjpeg($data['photo'], 230, $data['id_user']); 
-            $data['photo']='/img/'.$data['id_user'].'/'.$data['photo']['name'];
+
+    public function selectCompeticioAction() {
+        $view = new ViewModel();
+        $view->setTerminal(true);
+
+        $id_categoria = (int) $this->params()->fromRoute('id', 0);
+        if ($id_categoria == 0) {
+            echo "0";
+        } else {
+            $categoria = $this->categoriesTable->getCategoria($id_categoria);
+            $jsonCompeticio = [];
+            if ($categoria->cat_competicio == null) {
+                array_push($jsonCompeticio, array("", "-Sense competicions-"));
+            } else {
+                $competicions = $this->competicioTable->getCompeticions($categoria->cat_competicio);
+
+
+
+                foreach ($competicions as $competicio) {
+
+                    array_push($jsonCompeticio, array($competicio->id, utf8_encode($competicio->name)));
+                }
+            }
+            echo json_encode($jsonCompeticio);
         }
-        else{
-           $data['photo']='/img/perfilAnonim.jpg';
-        }
-        
-        return $data;
-        
+        return $view;
     }
-    public function tractarArrayUpdateProfile($data, $photo){
-        $photo=$data->photo;            
-        if(!empty($photo['name'])){
-            
-            $this->thumbjpeg($photo, 230, $data->id_user); 
-            $data->photo='/img/'.$data->id_user.'/'.$photo['name'];
+
+    public function tractarArrayFirstProfile($data) {
+
+        if (!empty($data['photo']['name'])) {
+
+            $this->thumbjpeg($data['photo'], 230, $data['id_user']);
+            $data['photo'] = '/img/' . $data['id_user'] . '/' . $data['photo']['name'];
+        } else {
+            $data['photo'] = '/img/perfilAnonim.jpg';
         }
-        else{
-           $data->photo=$photo;
-        }
-        
+
         return $data;
-        
     }
-    function thumbjpeg($imagen,$altura, $id_user) { 
+
+    public function tractarArrayUpdateProfile($data, $photo) {
+        $photo = $data->photo;
+        if (!empty($photo['name'])) {
+
+            $this->thumbjpeg($photo, 230, $data->id_user);
+            $data->photo = '/img/' . $data->id_user . '/' . $photo['name'];
+        } else {
+            $data->photo = $photo;
+        }
+
+        return $data;
+    }
+
+    function thumbjpeg($imagen, $altura, $id_user) {
         // Lugar donde se guardarán los thumbnails respecto a la carpeta donde está la imagen "grande". 
-        
         // Prefijo que se añadirá al nombre del thumbnail. Ejemplo: si la imagen grande fuera "imagen1.jpg", 
         // el thumbnail se llamaría "tn_imagen1.jpg" 
-      
-
         // Aquí tendremos el nombre de la imagen. 
-        $nombre = $imagen['name'];  
+        $nombre = $imagen['name'];
         $rootPath = getcwd();
-        
+
         // Aquí la ruta especificada para buscar la imagen. 
-        $camino =$rootPath.'\public\img\\'.$id_user;
-        $caminoImagen=$camino .'\\'.$nombre;
+        $camino = $rootPath . '\public\img\\' . $id_user;
+        $caminoImagen = $camino . '\\' . $nombre;
         // Intentamos crear el directorio de thumbnails, si no existiera previamente. 
-        if (!file_exists($camino)){
+        if (!file_exists($camino)) {
             mkdir($camino);
-            
         }
-            
+
 
         // Aquí comprovamos que la imagen que queremos crear no exista previamente 
         if (!file_exists($caminoImagen)) {
-            switch($imagen['type']) {
+            switch ($imagen['type']) {
                 case 'image/png':
-                  $img = imagecreatefrompng($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
-                  break;
+                    $img = imagecreatefrompng($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                    break;
                 case 'image/gif':
-                  $img = imagecreatefromgif($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
-                  break;
+                    $img = imagecreatefromgif($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                    break;
                 case 'image/jpeg':
-                  $img = imagecreatefromjpeg($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
-                  break;
+                    $img = imagecreatefromjpeg($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                    break;
                 case 'image/bmp':
-                  $img = imagecreatefrombmp($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
-                  break;
+                    $img = imagecreatefrombmp($imagen['tmp_name']) or die("No se encuentra la imagen $camino$nombre<br>\n");
+                    break;
                 default:
-                  $img = null; 
-                }
-              
-            
-           
+                    $img = null;
+            }
+
+
+
 
             // miramos el tamaño de la imagen original... 
             $datos = getimagesize($imagen['tmp_name']) or die("Problemas con $camino$nombre<br>\n");
@@ -353,7 +380,7 @@ class ProfileController extends AbstractActionController {
 
             // voilà la salvamos con el nombre y en el lugar que nos interesa. 
             imagejpeg($rezise, $caminoImagen);
-            
         }
-   }
+    }
+
 }

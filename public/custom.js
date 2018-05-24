@@ -51,6 +51,18 @@ $(document).ready(function(){
         $('#divBusqueda').css("display", "none");
     
     });
+    $('#botoFan').click(function(){
+        var user_pichichi=$(this).attr('data-id');
+        $post('projecteFinal/public/relations/fan'+user_pichichi, function(data){
+            if(data=="1"){
+                document.getElementById('botoFan').innerHTML='';
+                $(this).text('Fitxa\'t');
+            }
+            else{
+                alert("ERROR!");
+            }
+        });
+    });
     
 });
 function uploadTempImg(input) {
@@ -69,7 +81,7 @@ function selectComarca(){
     if(id_provincia==''){
         id_provincia=0;
     }
-$.post( "/projecteFinal/public/profile/select-comarques/"+id_provincia, function( data ) {
+    $.post( "/projecteFinal/public/profile/select-comarques/"+id_provincia, function( data ) {
         if(data!="0"){
             
             var datas=JSON.parse(data);
@@ -82,4 +94,22 @@ $.post( "/projecteFinal/public/profile/select-comarques/"+id_provincia, function
         }
     });
 }
-//<?=$this->url('admin-users', ['action' => 'delete', 'id'=>$user['id']]);?>
+function selectCompeticio(){
+    var id_competicio=document.getElementById('categoria').value;
+    document.getElementById('selectCompeticions').innerHTML='';
+    if(id_competicio==''){
+        id_competicio=0;
+    }
+    $.post( "/projecteFinal/public/profile/select-competicio/"+id_competicio, function( data ) {
+        if(data!="0"){
+            
+            var datas=JSON.parse(data);
+            var competicions=Array.from(datas);
+            for(var i=0; i<competicions.length; i++){
+                var op=$('<option value="'+competicions[i][0]+'">');
+                op.text(competicions[i][1]);
+                op.appendTo('#selectCompeticions');
+            }
+        }
+    });
+}

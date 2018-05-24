@@ -137,6 +137,14 @@
 }
 #informacio_professional{
     padding-top: 25px;
-    margin:10px 0px 5px 0px;
+    margin:10px 0px 5px 10px;
 
+}
+#info{
+    margin-right: auto;
+}
+#botoFan{
+    position:absolute;
+    bottom: 0;
+    left: 1px;
 }

@@ -35,7 +35,7 @@ class UsersForm extends Form
             'name' => 'rol_id',
             'type' => 'select',
             'options' => [
-                'label' => _('Rol'),
+                'label' => 'Rol',
             ],
         ]);
        $this->add([
