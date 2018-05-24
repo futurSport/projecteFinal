@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2018 a las 13:19:02
+-- Tiempo de generación: 24-05-2018 a las 08:59:13
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -21,6 +21,17 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `futursport`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -84,6 +95,41 @@ INSERT INTO `comarques` (`id`, `id_provincia`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `player_position`
+--
+
+CREATE TABLE `player_position` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `player_profile`
+--
+
+CREATE TABLE `player_profile` (
+  `id_user` int(11) NOT NULL,
+  `team` varchar(100) DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `id_position` int(11) DEFAULT NULL,
+  `age` smallint(2) DEFAULT NULL,
+  `weight` float(4,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `player_profile`
+--
+
+INSERT INTO `player_profile` (`id_user`, `team`, `id_categoria`, `id_position`, `age`, `weight`) VALUES
+(6, 'Escola de futbol Urgel', NULL, NULL, 25, 70.00),
+(21, 'CE La Fuliola', NULL, NULL, 21, 72.00);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `profiles`
 --
 
@@ -102,7 +148,10 @@ CREATE TABLE `profiles` (
 --
 
 INSERT INTO `profiles` (`id_user`, `photo`, `id_provincia`, `id_comarca`, `poblacio`, `direccio`, `telefon`) VALUES
-(21, 'C:\\xampp\\htdocs\\practicaFinal\\projecteFinal\\public\\img\\21\\', 2, 15, 'L', 'casdsfda', '973570123');
+(6, '/img/6/robin.jpg', 1, 2, 'La Fuliola', 'c/ arraval 34', '649008763'),
+(21, '/img/21/sangi.jpg', 1, 3, 'dfafdaf', 'fadsfas', '987456321'),
+(22, '/img/22/nami.jpg', 2, 14, 'sdasfas', 'fasfas', '973570123'),
+(24, '/img/24/nami.jpg', 1, 5, 'jjojio', 'huihiu', '973570123');
 
 -- --------------------------------------------------------
 
@@ -166,14 +215,23 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rol_id`, `username`, `password`, `name`, `surname`) VALUES
-(3, 3, 'aficionat@aficionat.com', '$2y$10$nmxCsUq/78Zew4h9xZTJ.u1b/E9RnAvDDs5ocJfix4C3TQTw3DyXK', 'aficionagt', 'fanatic'),
+(3, 3, 'aficionat@aficionat.com', '$2y$10$EUr8dKecc16KYJlhk9c3EuqJH0M4oliZCIDVA1hAZqbpZZzWE1S66', 'aficionagt', 'fanatic'),
 (5, 1, 'admin@admin.com', '$2y$10$B7RR9FmUDO3jUe1mKwFW8O/YAjeB1JqfwH7N55UzShZhu70pzx1XG', 'administrador', 'administrador'),
 (6, 2, 'jugador@jugador.com', '$2y$10$VRIU8wNjIy0p3Mx70T9ZzOkY5htaZoOC3Pyz4LRBikboCpK48jWQS', 'jugad', 'jugador'),
-(21, 2, 'prova@perfil.com', '$2y$10$iyUD.sH4mMAKfy/4.1s2TON47odxP4zEkxwzOFdApUaBUBZkcmTPq', 'Marta', 'Farre Llordes');
+(21, 2, 'prova@perfil.com', '$2y$10$iyUD.sH4mMAKfy/4.1s2TON47odxP4zEkxwzOFdApUaBUBZkcmTPq', 'Marta', 'Farre Llordes'),
+(22, 3, 'estic_com_una_puta_cabra@hotmail.com', '$2y$10$E/bZRvMlfyFaOALJI4Ofj.LD/F8KIBvQYRH9vMnIFt0MZ3wsq2O9W', 'es', 'aer'),
+(23, 2, 'prova@prova.com', '$2y$10$VAi04YtqFSjCd.MwwD/p2eL9f55WAsfg6a9nbe9bn9j2MszBF20DW', 'fadsafsd', 'fsadfa'),
+(24, 3, 'estherfarre711@hotmail.com', '$2y$10$xEzb1ioEEvvA5tsB0z3PXeOdiFFXhUfntnkvO0X/04fuBtmmnTLjO', 'Marta', 'Fadsfasf');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `comarques`
@@ -181,6 +239,20 @@ INSERT INTO `users` (`id`, `rol_id`, `username`, `password`, `name`, `surname`) 
 ALTER TABLE `comarques`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_provincies` (`id_provincia`);
+
+--
+-- Indices de la tabla `player_position`
+--
+ALTER TABLE `player_position`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `player_profile`
+--
+ALTER TABLE `player_profile`
+  ADD PRIMARY KEY (`id_user`),
+  ADD KEY `id_categoria` (`id_categoria`),
+  ADD KEY `player_profile_ibfk_1` (`id_position`);
 
 --
 -- Indices de la tabla `profiles`
@@ -212,10 +284,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `comarques`
 --
 ALTER TABLE `comarques`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT de la tabla `player_position`
+--
+ALTER TABLE `player_position`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `provincies`
@@ -233,7 +317,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restricciones para tablas volcadas
@@ -246,10 +330,17 @@ ALTER TABLE `comarques`
   ADD CONSTRAINT `comarques_ibfk_1` FOREIGN KEY (`id_provincia`) REFERENCES `provincies` (`id`);
 
 --
+-- Filtros para la tabla `player_profile`
+--
+ALTER TABLE `player_profile`
+  ADD CONSTRAINT `player_profile_ibfk_1` FOREIGN KEY (`id_position`) REFERENCES `player_position` (`id`),
+  ADD CONSTRAINT `player_profile_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categories` (`id`);
+
+--
 -- Filtros para la tabla `profiles`
 --
 ALTER TABLE `profiles`
-  ADD CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `users`
