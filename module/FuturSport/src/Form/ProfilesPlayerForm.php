@@ -1,62 +1,55 @@
 <?php
+
 namespace FuturSport\Form;
 
 use Zend\Form\Form;
 
-use Zend\Form\Element;
-class ProfileForm extends Form
+
+class ProfilesPlayerForm extends Form
 {
     public function __construct($name = null)
     {
         // We will ignore the name provided to the constructor
-        parent::__construct('profile');
+        parent::__construct('ProfilesPlayer');
 
         $this->add([
             'name' => 'id_user',
             'type' => 'hidden',
         ]);
         $this->add([
-            'name' => 'photo',
-            'type' => 'file',
-            'options' => [
-                'label' => 'Foto de perfil: ',
-            ],
-        ]);
-       $this->add([
-            'name' => 'id_provincia',
-            'type' => 'select',
-            'options' => [
-                'label' => 'Provincia: ',
-            ],
-        ]);
-       $this->add([
-            'name' => 'id_comarca',
-            'type' => 'select',
-           
-            'options' => [
-                'disable_inarray_validator' => true,
-                'label' => 'Comarca',
-            ],
-        ]);
-       $this->add([
-            'name' => 'poblacio',
+            'name' => 'team',
             'type' => 'text',
             'options' => [
-                'label' => 'Població: ',
+                'label' => 'Equip: ',
+            ],
+        ]);
+        $this->add([
+            'name' => 'id_categoria',
+            'type' => 'select',
+            'options' => [
+                'label' => 'Categoria:',
+            ],
+        ]);
+         $this->add([
+            'name' => 'id_position',
+            'type' => 'select',
+            'options' => [
+                'label' =>'Posició:',
             ],
         ]);
        $this->add([
-            'name' => 'direccio',
-            'type' => 'text',
+            'name' => 'age',
+            'type' => 'number',
             'options' => [
-                'label' => 'Direcció: ',
+                'label' => 'Edat: ',
             ],
         ]);
+       
        $this->add([
-            'type' => Element\Tel::class,
-            'name' => 'telefon',
+            'name' => 'weight',
+            'type' => 'number',
             'options' => [
-                'label' => 'Telefon',
+                'label' => 'Pes: ',
             ],
         ]);
         $this->add([
@@ -69,4 +62,6 @@ class ProfileForm extends Form
         ]);
     }
 }
+
+
 

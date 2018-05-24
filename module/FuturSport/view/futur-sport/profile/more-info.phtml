@@ -1,0 +1,78 @@
+<div class='form formProfile col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 '>
+    
+        <?php
+// This provides a default CSS class and placeholder text for the title element:
+        $team = $form->get('team');
+        $team->setAttribute('class', 'form-control');
+        $team->setAttribute('placeholder', 'Ex: Escola de Futbol Urgell');
+        //$potho->setAttribute('onchange', 'readURL(this);');
+        
+
+// This provides a default CSS class and placeholder text for the artist element:
+        $id_categoria = $form->get('id_categoria');
+        $id_categoria->setAttribute('class', 'form-control');
+     
+        $id_position= $form->get('id_position');
+        $id_position->setAttribute('class', 'form-control');
+        
+        $age = $form->get('age');
+        $age->setAttribute('class', 'form-control');
+        $age->setAttribute('placeholder', '14');
+      
+        $weight = $form->get('weight');
+        $weight->setAttribute('class', 'form-control');
+        $weight->setAttribute('placeholder', '52.00');
+        
+        //$id_user=$form->get('id_user');
+        //$id_user->setAttribute('value', $id_user);
+        
+        // This provides CSS classes for the submit button:
+        $submit = $form->get('submit');
+        $submit->setAttribute('class', 'btn btn-primary');
+        ?>
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+            <?php
+            $form->setAttribute('action', $this->url('profile', ['action' => 'more-info', 'id'=>$id_user]));
+            $form->prepare();
+
+            echo $this->form()->openTag($form);
+            ?>
+            <?php // Wrap the elements in divs marked as form groups, and render the
+            // label, element, and errors separately within 
+            ?>
+            <div class="form-group">
+                <?= $this->formLabel($team) ?>
+                <?= $this->formElement($team) ?>
+                <?= $this->formElementErrors()->render($team, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($id_categoria) ?>
+                <?= $this->formElement($id_categoria) ?>
+                <?= $this->formElementErrors()->render($id_categoria, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($id_position) ?>
+                <?= $this->formElement($id_position) ?>
+                <?= $this->formElementErrors()->render($id_position, ['class' => 'help-block']) ?>
+            </div>
+            <div class="form-group">
+                <?= $this->formLabel($age) ?>
+                <?= $this->formNumber($age) ?>
+                <?= $this->formElementErrors()->render($age, ['class' => 'help-block']) ?>
+            </div>
+            
+            <div class="form-group">
+                <?= $this->formLabel($weight) ?>
+                <?= $this->formNumber($weight) ?>
+                <?= $this->formElementErrors()->render($weight, ['class' => 'help-block']) ?>
+            </div>
+
+            <?php
+            echo $this->formSubmit($submit);
+            echo $this->formHidden($form->get('id_user'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+      
+</div>
+

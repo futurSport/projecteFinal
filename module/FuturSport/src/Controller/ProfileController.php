@@ -5,25 +5,36 @@ namespace FuturSport\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use FuturSport\Form\ProfileForm;
+use FuturSport\Form\ProfilesPlayerForm;
 use FuturSport\Model\ProfilesTable;
 use FuturSport\Model\UsersTable;
 use FuturSport\Model\Profiles;
+use FuturSport\Model\ProfilesPlayer;
 use FuturSport\Model\ProvinciesTable;
 use FuturSport\Model\ComarquesTable;
+use FuturSport\Model\ProfilesPlayerTable;
+use FuturSport\Model\CategoriesTable;
+use FuturSport\Model\PlayerPositionTable;
 
 
 
 class ProfileController extends AbstractActionController {
     private $profileTable;
+    private $profilePlayerTable;
     private $provinciesTable;
     private $comarquesTable;
     private $usersTable;
+    private $categoriesTable;
+    private $playerPositionTable;
     
-    public function __construct(ProfilesTable $profileTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable) {
+    public function __construct(ProfilesTable $profileTable, ProfilesPlayerTable $profilePlayerTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable, CategoriesTable $categoriesTable, PlayerPositionTable $playerPositionTable) {
         $this->profileTable=$profileTable;
         $this->provinciesTable=$provinciesTable;
+        $this->profilePlayerTable=$profilePlayerTable;
         $this->comarquesTable=$comarquesTable;
         $this->usersTable=$usersTable;
+        $this->categoriesTable=$categoriesTable;
+        $this->playerPositionTable=$playerPositionTable;
     }
     
     public function FirstProfileAction() {
@@ -57,12 +68,12 @@ class ProfileController extends AbstractActionController {
                             'id_user'=>$idUser];
                     }
                     $data=$form->getData();
-                    $data=$this->tractarArray($data);
+                    $data=$this->tractarArrayFirstProfile($data);
                     $profileUser->exchangeArray($data);
                     $this->profileTable->saveProfile($profileUser);
 
                 }
-                    $this->redirect()->toRoute('camp');
+                   $this->redirect()->toRoute('camp');
             }
             else {
                 $this->redirect()->toRoute('profile', array(
@@ -80,7 +91,7 @@ class ProfileController extends AbstractActionController {
     public function profileAction(){
         $idUser = (int) $this->params()->fromRoute('id', 0);
         if($this->access()->logat()!=0){
-            $profile=$this->profileTable->getPerfilUser($idUser);
+            $profile=$this->profileTable->getPerfilUserCompleted($idUser);
             if ($idUser==$this->access()->idUser()) {
                 if($profile==false){
                      $this->redirect()->toRoute('profile', array(
@@ -91,55 +102,111 @@ class ProfileController extends AbstractActionController {
                 
             }
             $user=$this->usersTable->getUserPerfil($idUser);
+            $profilePlayer=$this->profilePlayerTable->getPerfilPlayer($idUser);
             return ['user'=>$user,
-                     'profile'=>$profile];
-                   
+                     'profile'=>$profile,
+                    'profilePlayer'=>$profilePlayer];
                 
-        }    
+        }
+        else {
+            $this->redirect()->toRoute('index');
+        }
     }
-    public function changeProfileAction(){
+    public function changeProfileAction() {
         $idUser = (int) $this->params()->fromRoute('id', 0);
-        if($this->access()->logat()!=0){
-            $profile=$this->profileTable->getPerfilUser($idUser);
-            if ($idUser==$this->access()->idUser()) {
-                if($profile==false){
-                     $this->redirect()->toRoute('profile', array(
+        $profile = $this->profileTable->getPerfilUser($idUser);
+        if ($this->access()->logat() != 0 && $idUser == $this->access()->idUser()) {
+            if ($profile == false) {
+                $this->redirect()->toRoute('profile', array(
                     'controller' => 'profile',
-                    'action' =>  'first-profile',
-                    'id' =>$idUser ));
-                }
-                 $form = new ProfileForm();
-                    $form->get('submit')->setValue('Actualitzar Perfil');
-                    $form->get('id_user')->setValue($idUser);
-                    $provincies = $this->getProvinciesforSelect();
-                    $form->get('id_provincia')->setValueOptions($provincies);
-                    $comarca['']="-Selccioni una comarca-";
-                    $form->get('id_comarca')->setValueOptions($comarca);
-                    $request = $this->getRequest();
-                    if (!$request->isPost()) {
-                        return ['form' => $form,
-                                'id_user'=>$idUser];
-                    }
-                    $post = array_merge_recursive(
-                        $request->getPost()->toArray(),
-                        $request->getFiles()->toArray()
-                    );
-                    $profileUser = new Profiles();
-                    $form->setInputFilter($profileUser->getInputFilter());
-                    $form->setData($post);
-
-                    if (!$form->isValid()) {
-                        return ['form' => $form,
-                            'id_user'=>$idUser];
-                    }
-                    $data=$form->getData();
-                    $data=$this->tractarArray($data);
-                    $profileUser->exchangeArray($data);
-                    $this->profileTable->saveProfile($profileUser);
-
-                
+                    'action' => 'first-profile',
+                    'id' => $idUser));
             }
+
+            $form = new ProfileForm();
+            $form->bind($profile);
+            $form->get('submit')->setValue('Actualitzar Perfil');
+            $form->get('id_user')->setValue($idUser);
+            $provincies = $this->getProvinciesforSelect();
+            $form->get('id_provincia')->setValueOptions($provincies);
+            $comarcaSel = $this->comarquesTable->getComarca($profile->id_comarca);
+            $comarca[$profile->id_comarca] = utf8_encode($comarcaSel->name);
+            $form->get('id_comarca')->setValueOptions($comarca);
+            $request = $this->getRequest();
+
+
+
+
+            if (!$request->isPost()) {
+                return ['form' => $form,
+                    'id_user' => $idUser,
+                    'photo' => $profile->photo];
+            }
+            $post = array_merge_recursive(
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+            );
+            $profileUser = new Profiles();
+            $form->setInputFilter($profileUser->getInputFilter());
+            $form->setData($post);
+
+            if (!$form->isValid()) {
+                return ['form' => $form,
+                    'id_user' => $idUser,
+                    'photo' => $profile->photo];
+            }
+            $data = $form->getData();
+
+            $data = $this->tractarArrayUpdateProfile($data, $profile->photo);
+
+            $profileUser->exchangeArray((array) $data);
+            $this->profileTable->updateProfile($profileUser);
+            $this->redirect()->toRoute('profile', array(
+                'controller' => 'profile',
+                'action' => 'profile',
+                'id' => $idUser));
+        }
+        else {
+            $this->access()->destroySession();
+            $this->redirect()->toRoute('index');
+        }
+    }
+
+    public function moreInfoAction(){
+        $idUser = (int) $this->params()->fromRoute('id', 0);
+         if($this->access()->logat()!=0 && $idUser == $this->access()->idUser() && $this->access()->rol()=='jugador'){
+            $form = new ProfilesPlayerForm();
+            $form->get('submit')->setValue('Afegir Informació');
+            $form->get('id_user')->setValue($idUser);
+            $categories = $this->getForSelectCategories();
+            $form->get('id_categoria')->setValueOptions($categories);
+            $positions = $this->getForSelectPosition();
+            $form->get('id_position')->setValueOptions($positions);
+
+            $request = $this->getRequest();
+            if (!$request->isPost()) {
+                return ['form' => $form,
+                        'id_user'=>$idUser];
+            }
+
+            $profilePlayer = new ProfilesPlayer();
+            $form->setInputFilter($profilePlayer->getInputFilter());
+            $form->setData($request->getPost());
+
+            if (!$form->isValid()) {
+                return ['form' => $form,
+                    'id_user'=>$idUser];
+            }
+            $profilePlayer->exchangeArray($form->getData());
+            $this->profilePlayerTable->newProfileUser($profilePlayer);
+            $this->redirect()->toRoute('profile', array(
+                'controller' => 'profile',
+                'action' => 'profile',
+                'id' => $idUser));
             
+         }
+         else {
+            $this->access()->destroySession();
+            $this->redirect()->toRoute('index');
         }
     }
     
@@ -153,6 +220,26 @@ class ProfileController extends AbstractActionController {
             $provin[$key]=$provincia->name;
         }
         return $provin;
+    }
+    public function getForSelectCategories(){
+        $categories=$this->categoriesTable->fetchAll();
+        $cat['']='-Seleccioni una categoria-';
+        foreach($categories as $categoria){
+            
+            $key=$categoria->id;
+            $cat[$key]=$categoria->name;
+        }
+        return $cat;
+    }
+    public function getForSelectPosition(){
+        $positions=$this->playerPositionTable->fetchAll();
+        $pos['']='-La posició en la qual jugues-';
+        foreach($positions as $position){
+            
+            $key=$position->id;
+            $pos[$key]=$position->name;
+        }
+        return $pos;
     }
     public function selectComarquesAction(){
         $view = new ViewModel();
@@ -180,7 +267,7 @@ class ProfileController extends AbstractActionController {
         return $view;
     }
    
-    public function tractarArray($data){
+    public function tractarArrayFirstProfile($data){
         
         if(!empty($data['photo']['name'])){
             
@@ -189,6 +276,20 @@ class ProfileController extends AbstractActionController {
         }
         else{
            $data['photo']='/img/perfilAnonim.jpg';
+        }
+        
+        return $data;
+        
+    }
+    public function tractarArrayUpdateProfile($data, $photo){
+        $photo=$data->photo;            
+        if(!empty($photo['name'])){
+            
+            $this->thumbjpeg($photo, 230, $data->id_user); 
+            $data->photo='/img/'.$data->id_user.'/'.$photo['name'];
+        }
+        else{
+           $data->photo=$photo;
         }
         
         return $data;

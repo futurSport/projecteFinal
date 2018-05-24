@@ -45,7 +45,7 @@ class Profiles{
             'photo' => $this->photo,
             'id_provincia'  => $this->id_provincia,
             'id_comarca'  => $this->id_comarca,
-            'poblacio'  => $this->pobacio,
+            'poblacio'  => $this->poblacio,
             'direccio'  => $this->direccio,
             'telefon'  => $this->telefon,
         ];

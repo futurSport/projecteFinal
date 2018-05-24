@@ -1,10 +1,11 @@
 <?php
+
 namespace FuturSport\Model;
 
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 
-class ComarquesTable
+class PlayerPositionTable
 {
     private $tableGateway;
 
@@ -16,14 +17,5 @@ class ComarquesTable
     public function fetchAll()
     {
         return $this->tableGateway->select();
-    }
-    public function getComarques($id_provincia){
-        $rows = $this->tableGateway->select(['id_provincia' => $id_provincia]);
-        
-        return $rows;
-    }
-    public function getComarca($id){
-        $row=$this->tableGateway->select(['id'=>$id]);
-        return $row->current();
     }
 }

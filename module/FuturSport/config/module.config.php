@@ -98,7 +98,7 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\ProfileController::class,
-                        'action'     => 'profile',
+                        
                     ],
                 ],
             ],

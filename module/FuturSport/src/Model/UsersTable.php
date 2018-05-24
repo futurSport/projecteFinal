@@ -131,7 +131,7 @@ class UsersTable
     public function getUserPerfil($userId)
     {
         
-        $sql="select u.id, r.name as 'rol_name', u.name, u.surname from users u inner join rol r on u.rol_id=r.id where u.id='".$userId."'";
+        $sql="select u.username,u.id, r.name as 'rol_name', u.name, u.surname from users u inner join rol r on u.rol_id=r.id where u.id='".$userId."'";
         $rowset=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
  
 

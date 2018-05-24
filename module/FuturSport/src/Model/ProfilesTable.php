@@ -43,7 +43,7 @@ class ProfilesTable{
     public function updateProfile(Profiles $profile){
         
          $data = [
-            'id_user' => $profile->id_user,
+            
             'photo'  => $profile->photo,
             'id_provincia' => $profile->id_provincia,
             'id_comarca'  => $profile->id_comarca,
@@ -52,9 +52,19 @@ class ProfilesTable{
             'telefon'=>$profile->telefon
              
         ];
-         if($this->tableGateway->update($data)){
+         if($this->tableGateway->update($data, ['id_user'=>$profile->id_user])){
              return true;
          }
          return false;
     }
+     public function getPerfilUserCompleted($id){
+        $sql="select p.id_user, p.photo ,prov.name as 'pro_name', c.name as 'com_name', p.poblacio, p.direccio, p.telefon from profiles p inner join provincies prov on p.id_provincia=prov.id inner join comarques c on p.id_comarca=c.id where p.id_user=".$id;
+        $rowset=$this->tableGateway->getAdapter()->driver->getConnection()->execute($sql); 
+       if (! $rowset) {
+                return false;
+            }
+
+            return $rowset->current();
+ 
+     }
 }

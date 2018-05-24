@@ -1,14 +1,53 @@
 
-<div id="divCapsalera" style="height: 400px; background-image: url('<?php if($user['rol_name']=='aficionat'){ echo $this->basePath(); ?>/img/aficio.jpg <?php }else if($user['rol_name']=='jugador'){ echo $this->basePath();?>/img/camp.jpg <?php }?>')">
+<div id="divCapsalera" style="height: 300px; background-size:cover; background-image: url('<?php if($user['rol_name']=='aficionat'){ echo $this->basePath(); ?>/img/aficio.jpg <?php }else if($user['rol_name']=='jugador'){ echo $this->basePath();?>/img/camp.jpg <?php }?>')">
      <div class="row>">    
         <div id="imgPerfil" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-            <img src="<?php echo $this->basePath().$profile->photo; ?>" >
+            <img src="<?php echo $this->basePath().$profile['photo']; ?>" >
             <?php if($_SESSION['usuariConectat']['id']==$user['id']){ ?><a id="configuracio" alt="canviar perfil" href="<?= $this->url('profile',['action'=>'change-profile','id' =>$user['id']])?>" class="btn btn-warning"><i class="fa fa-cog"></i></a><?php }?>
         </div>
    
         <div id="divNom" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" >
-            <h1><?= $user['name'].' '.$user['surname']; ?></h1>
+            <h1><?= utf8_encode($user['name']).' '.utf8_encode($user['surname']); ?></h1>
             <h2><?= $user['rol_name']; ?></h2>
         </div>
     </div>        
 </div>
+   
+
+
+<div class="row">
+    <div class="col-md-3 col-sm-12 ">
+        <div id="informacio_personal" class="panel panel-info" >
+            <div class="panel-heading"><h3>Informacion Personal:</h3></div>
+            <div class="panel-body">
+                <p><strong>Provincia:</strong> <?= utf8_encode($profile['pro_name']); ?></p>
+                <p><strong>Comarca:</strong> <?= utf8_encode($profile['com_name']); ?></p>
+                <p><strong>Població:</strong> <?= utf8_encode($profile['poblacio']); ?></p>
+                <p><strong>Direcció:</strong> <?= utf8_encode($profile['direccio']); ?></p>
+                <p><strong>Telèfon:</strong> <?= $profile['telefon']; ?></p>
+                <p><strong>Correu Electrònic:</strong> <?= $user['username']; ?></p>
+                
+            </div>
+        </div>
+
+    </div>
+    <?php if($_SESSION['usuariConectat']['id']==$user['id'] && $user['rol_name']=='jugador'){ ?>
+    <div class="col-md-3 col-sm-12 ">
+        <div id="informacio_professional" class="panel panel-info" >
+            <div class="panel-heading"><h3>Informacion Professional:</h3></div>
+            <div class="panel-body">
+                <?php if($profilePlayer==false){ ?><a href="<?=$this->url('profile',['action'=>'more-info', 'id'=>$user['id']]);?>" class="btn btn-warning">Afegir més informació</a>
+                <?php }else if($profilePlayer!=false){ ?>
+                    <p><strong>Equip:</strong> <?= utf8_encode($profilePlayer['team']); ?></p>
+                    <p><strong>Categoria:</strong> <?= utf8_encode($profilePlayer['cat_name']); ?></p>
+                    <p><strong>Posició:</strong> <?= utf8_encode($profilePlayer['pos_name']); ?></p>
+                    <p><strong>Edat:</strong> <?= utf8_encode($profilePlayer['age']); ?></p>
+                    <p><strong>Pes:</strong> <?= $profilePlayer['weight']; ?></p>
+                    
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+</div>
+

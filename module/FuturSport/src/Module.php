@@ -68,6 +68,36 @@ class Module implements ConfigProviderInterface {
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Comarques());
                     return new TableGateway('comarques', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\ProfilesPlayerTable::class => function($container) {
+                    $tableGateway = $container->get(Model\ProfilesPlayerTableGateway::class);
+                    return new Model\ProfilesPlayerTable($tableGateway);
+                },
+                Model\ProfilesPlayerTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\ProfilesPlayer());
+                    return new TableGateway('player_profile', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\PlayerPositionTable::class => function($container) {
+                    $tableGateway = $container->get(Model\PlayerPositionTableGateway::class);
+                    return new Model\PlayerPositionTable($tableGateway);
+                },
+                Model\PlayerPositionTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\PlayerPosition());
+                    return new TableGateway('player_position', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\CategoriesTable::class => function($container) {
+                    $tableGateway = $container->get(Model\CategoriesTableTableGateway::class);
+                    return new Model\CategoriesTable($tableGateway);
+                },
+                Model\CategoriesTableTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Categories());
+                    return new TableGateway('categories', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }

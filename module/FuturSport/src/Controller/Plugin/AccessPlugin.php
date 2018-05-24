@@ -67,5 +67,12 @@ class AccessPlugin extends AbstractPlugin{
         }
         return false;
     }
+    public function rol(){
+         if($this->sessionManager->sessionExists()){
+            if(isset($_SESSION['usuariConectat'])){
+                return $this->sessionContainer->rol_name;
+            }
+        }
+    }
 }
 
