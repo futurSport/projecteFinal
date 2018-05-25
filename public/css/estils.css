@@ -148,3 +148,28 @@
     bottom: 0;
     left: 1px;
 }
+#llistaBanqueta{
+    list-style:none;
+    font-size: 15px;
+}
+#llistaBanqueta li{
+    padding:10px;
+    border-bottom: 1px solid black;
+    margin-right: 25px;
+}
+.formulariNoticia {
+    margin: 10px;
+}
+textarea{
+    width: 100%;
+    height: 70px;
+}
+.formulariNoticia form input{
+    margin-top: 10px;
+}
+.formulariNoticia form img{
+    margin: 10px 10px 10px 10px;
+}
+.formulariNoticia form button{
+    margin-top: 10px;
+}

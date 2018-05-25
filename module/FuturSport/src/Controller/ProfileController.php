@@ -16,6 +16,8 @@ use FuturSport\Model\ProfilesPlayerTable;
 use FuturSport\Model\CategoriesTable;
 use FuturSport\Model\PlayerPositionTable;
 use FuturSport\Model\CompeticionsTable;
+use FuturSport\Model\RelationsTable;
+use FuturSport\Model\NewsTable;
 
 class ProfileController extends AbstractActionController {
 
@@ -27,8 +29,10 @@ class ProfileController extends AbstractActionController {
     private $categoriesTable;
     private $playerPositionTable;
     private $competicioTable;
+    private $relationsTable;
+    private $newsTable;
 
-    public function __construct(ProfilesTable $profileTable, ProfilesPlayerTable $profilePlayerTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable, CategoriesTable $categoriesTable, PlayerPositionTable $playerPositionTable, CompeticionsTable $competicioTable) {
+    public function __construct(ProfilesTable $profileTable, ProfilesPlayerTable $profilePlayerTable, ProvinciesTable $provinciesTable, ComarquesTable $comarquesTable, UsersTable $usersTable, CategoriesTable $categoriesTable, PlayerPositionTable $playerPositionTable, CompeticionsTable $competicioTable, RelationsTable $relationsTable, NewsTable $newsTable) {
         $this->profileTable = $profileTable;
         $this->provinciesTable = $provinciesTable;
         $this->profilePlayerTable = $profilePlayerTable;
@@ -37,6 +41,8 @@ class ProfileController extends AbstractActionController {
         $this->categoriesTable = $categoriesTable;
         $this->playerPositionTable = $playerPositionTable;
         $this->competicioTable = $competicioTable;
+        $this->relationsTable=$relationsTable;
+        $this->newsTable=$newsTable;
     }
 
     public function firstProfileAction() {
@@ -100,9 +106,15 @@ class ProfileController extends AbstractActionController {
             }
             $user = $this->usersTable->getUserPerfil($idUser);
             $profilePlayer = $this->profilePlayerTable->getPerfilPlayer($idUser);
+            $relation=$this->relationsTable->getRelation($this->access()->idUser(), $user);
+            $seguidors=$this->relationsTable->get5Pichichis($idUser);
+            $news=$this->newsTable->get10news($idUser);
             return ['user' => $user,
                 'profile' => $profile,
-                'profilePlayer' => $profilePlayer];
+                'profilePlayer' => $profilePlayer,
+                'relation'=>$relation,
+                'seguidors'=>$seguidors,
+                'news'=>$news];
         } else {
             $this->redirect()->toRoute('index');
         }
@@ -129,9 +141,6 @@ class ProfileController extends AbstractActionController {
             $comarca[$profile->id_comarca] = utf8_encode($comarcaSel->name);
             $form->get('id_comarca')->setValueOptions($comarca);
             $request = $this->getRequest();
-
-
-
 
             if (!$request->isPost()) {
                 return ['form' => $form,
@@ -287,8 +296,6 @@ class ProfileController extends AbstractActionController {
                 array_push($jsonCompeticio, array("", "-Sense competicions-"));
             } else {
                 $competicions = $this->competicioTable->getCompeticions($categoria->cat_competicio);
-
-
 
                 foreach ($competicions as $competicio) {
 

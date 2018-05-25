@@ -2,9 +2,10 @@
 <div id="divCapsalera" style="height: 300px; background-size:cover; background-image: url('<?php if($user['rol_name']=='jugador'){ echo $this->basePath(); ?>/img/camp.jpg <?php }else { echo $this->basePath();?>/img/aficio.jpg <?php }?>')">
      <div class="row>">    
         <div id="imgPerfil" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-            <img src="<?php echo $this->basePath().$profile['photo']; ?>" >
+            <img src="<?php if(!empty($profile['photo'])){echo $this->basePath().$profile['photo']; }else{echo $this->basePath().'/img/perfilAnonim.jpg';} ?>" >
             <?php if($_SESSION['usuariConectat']['id']!=$user['id']){ ?>
-            <button class="btn btn-lg btn-info" id="botoFan" data-id="<?=$user['id']?>">Fer-se'n Fan</button>
+            
+            <button class="btn btn-lg btn-info" data-tipus="<?php echo ($relation==false)? "fan" : "deixa"; ?>" id="botoFan" data-id="<?=$user['id']?>"><?php echo ($relation==false)? "Fer-se'n Fan" : "Deixar de seguir"; ?></button>
            <?php } ?>
             <?php if($_SESSION['usuariConectat']['id']==$user['id']){ ?>
             <a id="configuracio" alt="canviar perfil" href="<?= $this->url('profile',['action'=>'change-profile','id' =>$user['id']])?>" class="btn btn-warning"><i class="fa fa-cog"></i></a><?php }?>
@@ -64,9 +65,9 @@
             <div id="informacio_personal" class="panel panel-info" >
                 <div class="panel-heading"><h3><a href="">Banqueta</a></h3></div>
                 <div class="panel-body">
-                    <ul>
+                    <ul id="llistaBanqueta">
                     <?php foreach($seguidors as $seguidor){ ?>
-                        <li><a href="<?=$this->url('profile',['action'=>'profile', 'id'=>$seguidor['id']] ); ?>"><?= $seguidor['name'].' '.$seguidor['surname'] ?></a></li>
+                        <li><a href="<?=$this->url('profile',['action'=>'profile', 'id'=>$seguidor['user_pichichi']] );?>"><?= $seguidor['name'].' '.$seguidor['surname'] ?></a></li>
                     <?php } ?>
                     </ul>
                 </div>
@@ -74,4 +75,39 @@
 
         </div>
     </div>
+    <div id="enviarMisstge" class="col-md-12 col-sm-12">
+            <div id="areaDeJoc" class="panel panel-info" >
+                <div class="panel-heading"><h3>Àrea de Joc</h3></div>
+                <?php if($_SESSION['usuariConectat']['id']==$user['id']){ ?>
+                <div class="formulariNoticia">
+                    <form action="<?= $this->url('news',['action'=>'save-new', 'id'=>$user['id']]);?>" method="post" enctype="multipart/form-data">
+                        <textarea name="cosNoticia" placeholder="Escriu el missatge aquí...."></textarea>
+                        <input type="file" name="file" onchange="uploadTempImg(this)">
+                        <img style="display:none" id="img-profile">
+                        <br><label>Puja un video des de una URL:</label>
+                        <input input="text" class="form-control" name="url" placeholder="https://www.youtube.com/watch?v=LWHPYEzSLxo">
+                        <input type="submit" value="Publicar" class="btn btn-success btn-block">
+                    </form>
+                </div>
+                <?php } ?>
+                <?php foreach($news as $new){ ?>
+                 <div class="panel-body">
+                     <?php if(!empty($new->body)){ ?>
+                     <p><?=$new->body?></p>
+                    <?php } ?>
+                     <?php if(!empty($new->img)){ ?>
+                     <img src="<?=$this->basePath().$new->img?>" alt="foto noticia">
+                    <?php } ?>
+                    <?php if(!empty($new->url)){ ?>
+                    <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+                    width="640" height="390" src="http://www.youtube.com/embed/<?=$new->url?>"
+                    frameborder="0" allowFullScreen></iframe>
+                    <?php } ?>
+                     <div>-----------------------------------------------------------------------</div>
+                </div>
+                <?php } ?>
+            </div>
+    </div>
+       
+  
 </div>

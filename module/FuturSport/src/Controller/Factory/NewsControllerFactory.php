@@ -3,14 +3,12 @@ namespace FuturSport\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use FuturSport\Controller\RelationsController;
-use FuturSport\Model\RelationsTable;
+use FuturSport\Controller\NewsController;
+use FuturSport\Model\NewsTable;
 
 
-
-
-class RelationsControllerFactory implements FactoryInterface{
+class NewsControllerFactory implements FactoryInterface{
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null) {
-        return new RelationsController($container->get(RelationsTable::class));
+        return new NewsController($container->get(NewsTable::class));
     }
 }

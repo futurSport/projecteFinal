@@ -18,6 +18,8 @@ return [
             Controller\AdminCategoriesController::class=> Controller\Factory\AdminCategoriesControllerFactory::class,
             Controller\AdminCompeticionsController::class=> Controller\Factory\AdminCompeticionsControllerFactory::class,
             Controller\AdminPosicionsController::class=> Controller\Factory\AdminPosicionsControllerFactory::class,
+            Controller\RelationsController::class=> Controller\Factory\RelationsControllerFactory::class,
+            Controller\NewsController::class=> Controller\Factory\NewsControllerFactory::class,
 
         ],
     ],
@@ -175,6 +177,35 @@ return [
                     'defaults' => [
                         'controller' => Controller\AdminPosicionsController::class,
                         'action'=>'index',
+                    ],
+                ],
+            ],
+            'relations' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/relations[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\RelationsController::class,
+                        
+                    ],
+                ],
+            ],
+            'news' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/news[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                       
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\NewsController::class,
+                        
                     ],
                 ],
             ],

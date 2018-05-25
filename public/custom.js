@@ -53,15 +53,34 @@ $(document).ready(function(){
     });
     $('#botoFan').click(function(){
         var user_pichichi=$(this).attr('data-id');
-        $post('projecteFinal/public/relations/fan'+user_pichichi, function(data){
-            if(data=="1"){
-                document.getElementById('botoFan').innerHTML='';
-                $(this).text('Fitxa\'t');
-            }
-            else{
-                alert("ERROR!");
-            }
-        });
+        var tipus=$(this).attr('data-tipus');
+        boto=$(this);
+        if(tipus=='fan'){
+            $.post('/projecteFinal/public/relations/fan/'+user_pichichi, function(data){
+                if(data=="1"){
+                    document.getElementById('botoFan').innerHTML='';
+                    boto.attr('data-tipus', 'deixa')
+                    boto.text('Deixar de seguir');
+                }
+                else{
+                    alert("ERROR!");
+                }
+            });
+        }
+        else if(tipus=='deixa'){
+            $.post('/projecteFinal/public/relations/deixa/'+user_pichichi, function(data){
+                if(data=="1"){
+                    document.getElementById('botoFan').innerHTML='';
+                   boto.attr('data-tipus', 'fan')
+                    boto.text('Fer-se\'n Fan');
+                }
+                else{
+                    alert("ERROR!");
+                }
+            });
+             
+             
+        }
     });
     
 });
@@ -70,7 +89,9 @@ function uploadTempImg(input) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $('#img-profile')
-        .attr('src', e.target.result)
+        .attr('src', e.target.result);
+        document.getElementById("img-profile").style.display = "inline";
+      
     };
     reader.readAsDataURL(input.files[0]);
   }
@@ -113,3 +134,4 @@ function selectCompeticio(){
         }
     });
 }
+

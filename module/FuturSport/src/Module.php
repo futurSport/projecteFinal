@@ -118,6 +118,26 @@ class Module implements ConfigProviderInterface {
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Posicions());
                     return new TableGateway('player_position', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\RelationsTable::class => function($container) {
+                    $tableGateway = $container->get(Model\RelationsTableGateway::class);
+                    return new Model\RelationsTable($tableGateway);
+                },
+                Model\RelationsTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Relations());
+                    return new TableGateway('relations', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\NewsTable::class => function($container) {
+                    $tableGateway = $container->get(Model\NewsTableGateway::class);
+                    return new Model\NewsTable($tableGateway);
+                },
+                Model\NewsTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\News());
+                    return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }
